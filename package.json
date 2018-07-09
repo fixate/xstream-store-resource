@@ -4,15 +4,12 @@
   "description": "A module for making requests in xstream-store easy to build",
   "main": "index.js",
   "scripts": {
-    "changelog":
-      "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
+    "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
     "commit": "git-cz",
     "compile": "tsc",
     "predist": "rm -rf dist/ && mkdirp dist/ && npm run compile",
-    "dist":
-      "browserify index.js --standalone xstream-store-resource --external xstream > dist/xstream-store-resource.js",
-    "postdist":
-      "uglifyjs dist/xstream-store-resource.js -o dist/xstream-store-resource.min.js",
+    "dist": "browserify index.js --standalone xstream-store-resource --external xstream > dist/xstream-store-resource.js",
+    "postdist": "uglifyjs dist/xstream-store-resource.js -o dist/xstream-store-resource.min.js",
     "lint": "tslint src/**/*.ts -t verbose -t stylish",
     "watch:lint": "chokidar src/**/*.ts -c \"npm run lint\" --initial",
     "semantic-release": "semantic-release",
@@ -26,7 +23,10 @@
     "type": "git",
     "url": "git+https://github.com/fixate/xstream-store-resource.git"
   },
-  "keywords": ["xstream", "xstream-store"],
+  "keywords": [
+    "xstream",
+    "xstream-store"
+  ],
   "author": "Larry Botha",
   "license": "MIT",
   "bugs": {
@@ -43,6 +43,7 @@
     "conventional-changelog": "^2.0.0",
     "conventional-changelog-cli": "^2.0.0",
     "cz-conventional-changelog": "^2.1.0",
+    "fetch-mock": "6.5.0",
     "ghooks": "^2.0.4",
     "jest": "^23.0.1",
     "prettier": "^1.13.4",
