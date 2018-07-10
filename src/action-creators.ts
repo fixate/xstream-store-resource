@@ -43,8 +43,8 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.GET,
   }),
 
-  getSuccess: (item: IResource): IAction => ({
-    item,
+  getSuccess: (entity: IResource): IAction => ({
+    entity,
     type: actionTypes.GET_SUCCESS,
   }),
 
@@ -60,8 +60,8 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.CREATE,
   }),
 
-  createSuccess: (items: IResource[]): IAction => ({
-    items,
+  createSuccess: (entity: IResource): IAction => ({
+    entity,
     type: actionTypes.CREATE_SUCCESS,
   }),
 
@@ -77,8 +77,8 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.PATCH,
   }),
 
-  patchSuccess: (items: IResource[]): IAction => ({
-    items,
+  patchSuccess: (entity: IResource): IAction => ({
+    entity,
     type: actionTypes.PATCH_SUCCESS,
   }),
 
@@ -94,8 +94,8 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.UPDATE,
   }),
 
-  updateSuccess: (item: IResource): IAction => ({
-    item,
+  updateSuccess: (entity: IResource): IAction => ({
+    entity,
     type: actionTypes.UPDATE_SUCCESS,
   }),
 
@@ -111,8 +111,8 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.REMOVE,
   }),
 
-  removeSuccess: (items: IResource): IAction => ({
-    items,
+  removeSuccess: (entity: IResource): IAction => ({
+    entity,
     type: actionTypes.REMOVE_SUCCESS,
   }),
 

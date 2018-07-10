@@ -94,7 +94,7 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
           )
           .map(action => (state: IScopedState) => ({
             ...state,
-            item: action.item,
+	    entity: action.entity,
             requestMethod: RequestMethods.IDLE,
             requestState: RequestStates.SUCCESS,
           })),
