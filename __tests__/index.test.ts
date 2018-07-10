@@ -1,4 +1,15 @@
+import createActionTypes from '../src/action-types';
+import createResource from '../src/index';
+
 describe('xstream-store-resource', () => {
+  test('-> throws if initialised without name', () => {
+    expect(() => createResource({name: '', url: 'fakeurl'})).toThrow();
+  });
+
+  test('-> throws if initialised without url', () => {
+    expect(() => createResource({name: 'fakename', url: ''})).toThrow();
+  });
+
   test('-> configures request, success, and failure actions', () => {
     expect(false).toBe(true);
   });
