@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`action types -> action type snapshot 1`] = `
+exports[`xstream-store-resource -> returns actions and action types 1`] = `
 Object {
   "CREATE": "@my-service/create",
   "CREATE_FAILURE": "@my-service/create-failure",
@@ -21,5 +21,29 @@ Object {
   "UPDATE": "@my-service/update",
   "UPDATE_FAILURE": "@my-service/update-failure",
   "UPDATE_SUCCESS": "@my-service/update-success",
+}
+`;
+
+exports[`xstream-store-resource -> returns actions and action types 2`] = `
+Object {
+  "create": [Function],
+  "createFailure": [Function],
+  "createSuccess": [Function],
+  "find": [Function],
+  "findFailure": [Function],
+  "findSuccess": [Function],
+  "get": [Function],
+  "getFailure": [Function],
+  "getSuccess": [Function],
+  "patch": [Function],
+  "patchFailure": [Function],
+  "patchSuccess": [Function],
+  "remove": [Function],
+  "removeFailure": [Function],
+  "removeSuccess": [Function],
+  "reset": [Function],
+  "update": [Function],
+  "updateFailure": [Function],
+  "updateSuccess": [Function],
 }
 `;

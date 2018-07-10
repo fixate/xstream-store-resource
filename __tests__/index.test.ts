@@ -26,15 +26,10 @@ describe('xstream-store-resource', () => {
     expect(false).toBe(true);
   });
 
-  test('-> returns action types that can be subscribed to', () => {
-    expect(false).toBe(true);
-  });
-});
-
-describe('action types', () => {
-  test('-> action type snapshot', () => {
-    const actionTypes = createActionTypes('my-service');
+  test('-> returns actions and action types', () => {
+    const {actionTypes, actions} = createResource({name: 'my-service', url: 'fake'});
 
     expect(actionTypes).toMatchSnapshot();
+    expect(actions).toMatchSnapshot();
   });
 });
