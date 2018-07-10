@@ -60,6 +60,12 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
             requestState: RequestStates.FAILURE,
           })),
 
+        select(actionTypes.CREATE).map(_ => (state: IScopedState) => ({
+          ...state,
+          requestMethod: RequestMethods.CREATING,
+          requestState: RequestStates.REQUESTING,
+        })),
+
         select(actionTypes.FIND).map(_ => (state: IScopedState) => ({
           ...state,
           requestMethod: RequestMethods.FINDING,
@@ -75,6 +81,12 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
         select(actionTypes.PATCH).map(_ => (state: IScopedState) => ({
           ...state,
           requestMethod: RequestMethods.PATCHING,
+          requestState: RequestStates.REQUESTING,
+        })),
+
+        select(actionTypes.REMOVE).map(_ => (state: IScopedState) => ({
+          ...state,
+          requestMethod: RequestMethods.REMOVING,
           requestState: RequestStates.REQUESTING,
         })),
 
@@ -94,7 +106,7 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
           )
           .map(action => (state: IScopedState) => ({
             ...state,
-	    entity: action.entity,
+            entity: action.entity,
             requestMethod: RequestMethods.IDLE,
             requestState: RequestStates.SUCCESS,
           })),
