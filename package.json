@@ -58,7 +58,7 @@
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.8.3",
     "xstream": "^11.4.0",
-    "xstream-store": "^1.1.1"
+    "xstream-store": "^1.1.2"
   },
   "peerDependencies": {
     "xstream": "*",
