@@ -46,6 +46,7 @@
     "fetch-mock": "6.5.0",
     "ghooks": "^2.0.4",
     "jest": "^23.0.1",
+    "jest-fetch-mock": "1.6.5",
     "prettier": "^1.13.4",
     "semantic-release": "^15.5.0",
     "travis-deploy-once": "^5.0.0",
