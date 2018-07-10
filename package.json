@@ -60,11 +60,13 @@
     "xstream-store": "^1.1.1"
   },
   "peerDependencies": {
-    "xstream": "*"
+    "xstream": "*",
+    "xstream-store": "*"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "dependencies": {}
 }
