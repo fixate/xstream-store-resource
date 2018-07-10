@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`action types -> action type snapshot 1`] = `
+Object {
+  "CREATE": "@my-service/create",
+  "CREATE_FAILURE": "@my-service/create-failure",
+  "CREATE_SUCCESS": "@my-service/create-success",
+  "FIND": "@my-service/find",
+  "FIND_FAILURE": "@my-service/find-failure",
+  "FIND_SUCCESS": "@my-service/find-success",
+  "GET": "@my-service/get",
+  "GET_FAILURE": "@my-service/get-failure",
+  "GET_SUCCESS": "@my-service/get-success",
+  "PATCH": "@my-service/patch",
+  "PATCH_FAILURE": "@my-service/patch-failure",
+  "PATCH_SUCCESS": "@my-service/patch-success",
+  "REMOVE": "@my-service/remove",
+  "REMOVE_FAILURE": "@my-service/remove-failure",
+  "REMOVE_SUCCESS": "@my-service/remove-success",
+  "RESET": "my-service/reset",
+  "UPDATE": "@my-service/update",
+  "UPDATE_FAILURE": "@my-service/update-failure",
+  "UPDATE_SUCCESS": "@my-service/update-success",
+}
+`;
