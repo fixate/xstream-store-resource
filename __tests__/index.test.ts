@@ -26,3 +26,11 @@ describe('xstream-store-resource', () => {
     expect(false).toBe(true);
   });
 });
+
+describe('action types', () => {
+  test('-> action type snapshot', () => {
+    const actionTypes = createActionTypes('my-service');
+
+    expect(actionTypes).toMatchSnapshot();
+  });
+});
