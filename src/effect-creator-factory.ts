@@ -36,7 +36,8 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
     });
     const successResponse$: Stream<ResourceResponse> = response$
       .replaceError(_ => xs.empty())
-      .filter(Boolean);
+      .filter(Boolean)
+      .flatten();
     const failureResponse$: Stream<ResourceResponseError> = response$
       .filter(() => false)
       .replaceError(x => {
