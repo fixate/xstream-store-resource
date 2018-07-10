@@ -18,6 +18,10 @@ describe('xstream-store-resource', () => {
     expect(false).toBe(true);
   });
 
+  test('-> handles endpoints with multiple parameters', () => {
+    expect(false).toBe(true);
+  });
+
   test('-> accepts a stream creator that extends the resources stream', () => {
     expect(false).toBe(true);
   });
