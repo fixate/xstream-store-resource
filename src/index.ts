@@ -6,9 +6,11 @@ import createEffectCreator, {Method} from './effect-creator-factory';
 import {fetchProvider} from './providers';
 import createStreamCreator from './stream-creator-factory';
 
+export type CreateEffectCreator = (actionTypes: any) => IEffectCreator;
+
 export interface ICreateResourceOptions {
-  configureRequest: (x: Method) => {[key: string]: any};
-  customEffectCreators: [(actionTypes: any) => IEffectCreator];
+  configureRequest?: (x: Method) => {[key: string]: any};
+  customEffectCreators?: CreateEffectCreator[];
   methods?: Method[];
   name: string;
   url: string;
@@ -19,6 +21,7 @@ export interface ICreateResourceReturn {
   actions: any;
   actionTypes: {[key: string]: string};
   streamCreator: IStreamCreator;
+  effectCreators: IEffectCreator[];
 }
 
 export type CreateResource = (baseOpts: ICreateResourceOptions) => ICreateResourceReturn;
