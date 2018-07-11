@@ -8,7 +8,7 @@ A module for removing the repetitive work in configuring API requests in [xstrea
 
 ## Install
 
-`xstream-store-resource` has `xstream` and `xstream-store` as depdendencies.
+`xstream-store-resource` has `xstream` and `xstream-store` as peer dependencies.
 
 ```bash
 $ npm i xstream xstream-store xstream-store-resource
@@ -16,6 +16,5 @@ $ npm i xstream xstream-store xstream-store-resource
 
 ## Todo
 
-- [ ] installation
 - [ ] document API
 - [ ] examples
