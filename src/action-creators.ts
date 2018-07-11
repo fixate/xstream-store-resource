@@ -70,10 +70,10 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.CREATE_FAILURE,
   }),
 
-  patch: (id: ID, data: IData, extra: IExtra): IAction => ({
-    ...extra,
+  patch: (id: ID, data: IData, params?: IParams): IAction => ({
     data,
     id,
+    params,
     type: actionTypes.PATCH,
   }),
 
@@ -87,8 +87,8 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.PATCH_FAILURE,
   }),
 
-  update: (id: ID, params?: IParams, extra?: IExtra): IAction => ({
-    ...extra,
+  update: (id: ID, data: IData, params?: IParams): IAction => ({
+    data,
     id,
     params,
     type: actionTypes.UPDATE,
@@ -104,10 +104,10 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.UPDATE_FAILURE,
   }),
 
-  remove: (id: ID, data: IData, extra?: IParams): IAction => ({
-    ...extra,
+  remove: (id: ID, data: IData, params?: IParams): IAction => ({
     data,
     id,
+    params,
     type: actionTypes.REMOVE,
   }),
 
