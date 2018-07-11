@@ -3,7 +3,7 @@ import {IAction, IEffectCreator, IStreamCreator} from 'xstream-store';
 import getActions from './action-creators';
 import createActionTypes from './action-types';
 import createEffectCreator, {Method} from './effect-creator-factory';
-import {fetchProvider} from './providers';
+import {fetchProvider, Provider} from './providers';
 import createStreamCreator from './stream-creator-factory';
 
 export type CreateEffectCreator = (actionTypes: any) => IEffectCreator;
@@ -13,6 +13,7 @@ export interface ICreateResourceOptions {
   customEffectCreators?: CreateEffectCreator[];
   methods?: Method[];
   name: string;
+  provider?: Provider;
   url: string;
   [key: string]: any;
 }
