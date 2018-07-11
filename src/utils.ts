@@ -19,7 +19,7 @@ const getUrl = (url: string, params: {[key: string]: any}, query: {[key: string]
   const qs = getQueryString(query);
   const urlWithParams = getParameteriseUrl(url, params);
 
-  return [urlWithParams, qs].join('?');
+  return [urlWithParams, qs].filter(Boolean).join('?');
 };
 
 export {getUrl, getParameteriseUrl, getQueryString};
