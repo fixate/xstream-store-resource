@@ -11,17 +11,13 @@ export interface IData {
 export interface IParams {
   params: {[key: string]: any};
 }
-export interface IExtra {
-  [key: string]: any;
-}
 
 const getActions = (actionTypes: any) => ({
   reset: (): IAction => ({
     type: actionTypes.RESET,
   }),
 
-  find: (params?: IParams, extra?: IExtra): IAction => ({
-    ...extra,
+  find: (params?: IParams): IAction => ({
     params,
     type: actionTypes.FIND,
   }),
@@ -36,8 +32,7 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.FIND_FAILURE,
   }),
 
-  get: (id: ID, params?: IParams, extra?: IExtra): IAction => ({
-    ...extra,
+  get: (id: ID, params?: IParams): IAction => ({
     id,
     params,
     type: actionTypes.GET,
@@ -53,8 +48,7 @@ const getActions = (actionTypes: any) => ({
     type: actionTypes.GET_FAILURE,
   }),
 
-  create: (data: IData, params: IParams, extra: IExtra): IAction => ({
-    ...extra,
+  create: (data: IData, params?: IParams): IAction => ({
     data,
     params,
     type: actionTypes.CREATE,
