@@ -225,4 +225,12 @@ describe('xstream-store-resource', () => {
     expect(actionTypes).toMatchSnapshot();
     expect(actions).toMatchSnapshot();
   });
+
+  test.skip('-> allows requests to be configured', () => {
+    expect(false).toBe(true);
+  });
+
+  test.skip('-> handles failed requests', () => {
+    expect(false).toBe(true);
+  });
 });
