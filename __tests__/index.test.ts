@@ -2,7 +2,7 @@ import xs from 'xstream';
 import buffer from 'xstream/extra/buffer';
 import createStore from 'xstream-store';
 
-import {RequestMethods, RequestStates} from '../src/stream-creator-factory';
+import {RequestMethods, RequestStates} from '../src/types/stream-creator-factory';
 import createResource from '../src/index';
 import * as providers from '../src/providers';
 
