@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fixate/xstream-store-resource.git"
+    "url": "https://github.com/fixate/xstream-store-resource.git"
   },
   "keywords": [
     "xstream",
@@ -48,8 +48,8 @@
     "jest": "^23.0.1",
     "jest-fetch-mock": "1.6.5",
     "prettier": "^1.13.4",
-    "semantic-release": "^15.5.0",
-    "travis-deploy-once": "^5.0.0",
+    "semantic-release": "^15.7.0",
+    "travis-deploy-once": "^5.0.1",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.0.5",
     "tslint": "^5.10.0",
