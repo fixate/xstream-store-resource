@@ -118,7 +118,7 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
           requestState: RequestStates.SUCCESS,
         })),
 
-        select(actionTypes.RESET).map(_ => (_: any) => initialState),
+        select(actionTypes.RESET).map(() => (_: any) => initialState),
       )
       .startWith(() => initialState);
 };

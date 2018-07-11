@@ -1,12 +1,14 @@
 import xs, {Stream} from 'xstream';
 import {IAction, IEffectCreator} from 'xstream-store';
 
-import {getUrl} from './utils';
 import {IError, IResource} from './stream-creator-factory';
+import {getUrl} from './utils';
 
 export type Method = 'create' | 'find' | 'get' | 'patch' | 'remove' | 'update';
 
-export type ResourceResponseError = {error: IError};
+export interface IResourceResponseError {
+  error: IError;
+}
 export type ResourceResponse = IResource | IResource[];
 
 export interface ICreateEffectCreator {
@@ -38,7 +40,7 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
       .replaceError(_ => xs.empty())
       .filter(Boolean)
       .flatten();
-    const failureResponse$: Stream<ResourceResponseError> = response$
+    const failureResponse$: Stream<IResourceResponseError> = response$
       .filter(() => false)
       .replaceError(x => {
         if (typeof x.then === 'function') {
@@ -52,8 +54,8 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
 
     const subscription = mergedResponse$.subscribe({
       next(res) {
-        if ((res as ResourceResponseError).error) {
-          dispatch(failureAction((res as ResourceResponseError).error));
+        if ((res as IResourceResponseError).error) {
+          dispatch(failureAction((res as IResourceResponseError).error));
         } else {
           dispatch(successAction(res));
         }

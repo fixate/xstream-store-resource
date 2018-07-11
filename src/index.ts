@@ -1,7 +1,7 @@
 import {IAction, IEffectCreator, IStreamCreator} from 'xstream-store';
 
-import createActionTypes from './action-types';
 import getActions from './action-creators';
+import createActionTypes from './action-types';
 import createEffectCreator, {Method} from './effect-creator-factory';
 import {fetchProvider} from './providers';
 import createStreamCreator from './stream-creator-factory';
@@ -32,9 +32,9 @@ const createResource: CreateResource = baseOpts => {
 
   const options: ICreateResourceOptions = {
     configureRequest: (method: Method) => ({method}),
-    provider: fetchProvider,
-    methods: ['create', 'find', 'get', 'patch', 'remove', 'update'],
     customEffectCreators: [],
+    methods: ['create', 'find', 'get', 'patch', 'remove', 'update'],
+    provider: fetchProvider,
     ...baseOpts,
   };
 
@@ -46,8 +46,8 @@ const createResource: CreateResource = baseOpts => {
     .concat(options.customEffectCreators.map(effectCreator => effectCreator(actionTypes)));
 
   return {
-    actions,
     actionTypes,
+    actions,
     effectCreators,
     streamCreator,
   };
