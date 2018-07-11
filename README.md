@@ -6,6 +6,14 @@
 
 A module for removing the repetitive work in configuring API requests in [xstream-store](https://github.com/fixate/xstream-store).
 
+## Install
+
+`xstream-store-resource` has `xstream` and `xstream-store` as depdendencies.
+
+```bash
+$ npm i xstream xstream-store xstream-store-resource
+```
+
 ## Todo
 
 - [ ] installation
