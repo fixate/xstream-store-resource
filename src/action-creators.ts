@@ -1,16 +1,7 @@
 import {IAction} from 'xstream-store';
 
-import {IError, IResource} from './stream-creator-factory';
-
-export interface ID {
-  id: string | number;
-}
-export interface IData {
-  data: {[key: string]: any};
-}
-export interface IParams {
-  params: {[key: string]: any};
-}
+import {IError, IResource} from './types/stream-creator-factory';
+import {ID, IData, IParams} from './types/action-creators';
 
 const getActions = (actionTypes: any) => ({
   reset: (): IAction => ({

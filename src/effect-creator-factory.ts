@@ -1,23 +1,16 @@
 import xs, {Stream} from 'xstream';
 import {IAction, IEffectCreator} from 'xstream-store';
 
-import {ICreateResourceConfig} from './index';
-import {IError, IResource} from './stream-creator-factory';
 import {getUrl} from './utils';
 
-export type Method = 'create' | 'find' | 'get' | 'patch' | 'remove' | 'update';
-
-export interface IResourceResponseError {
-  error: IError;
-}
-export type ResourceResponse = IResource | IResource[];
-
-export interface ICreateEffectCreator {
-  actions: {[key: string]: (...args: any[]) => IAction};
-  actionTypes: {[key: string]: string};
-  method: Method;
-  config: ICreateResourceConfig;
-}
+import {ICreateResourceConfig} from './types/create-resource';
+import {
+  ICreateEffectCreator,
+  IResourceResponseError,
+  Method,
+  ResourceResponse,
+} from './types/effect-creator-factory';
+import {IError, IResource} from './types/stream-creator-factory';
 
 const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
   actionTypes,

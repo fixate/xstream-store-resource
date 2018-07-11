@@ -1,36 +1,13 @@
 import xs from 'xstream';
 import {IAction, IScopedState, IStreamCreator} from 'xstream-store';
 
-export enum RequestStates {
-  IDLE,
-  REQUESTING,
-  SUCCESS,
-  FAILURE,
-}
-
-export enum RequestMethods {
-  IDLE,
-  GETTING,
-  FINDING,
-  CREATING,
-  PATCHING,
-  UPDATING,
-  REMOVING,
-}
-
-export interface IResource {
-  [key: string]: any;
-}
-export interface IError {
-  [key: string]: any;
-}
-export interface IResourceState {
-  entity: IResource | null;
-  items: IResource[];
-  lastError: IError;
-  requestMethod: RequestMethods;
-  requestState: RequestStates;
-}
+import {
+  RequestMethods,
+  RequestStates,
+  IError,
+  IResource,
+  IResourceState,
+} from './types/stream-creator-factory'
 
 const initialState: IResourceState = {
   entity: null,
