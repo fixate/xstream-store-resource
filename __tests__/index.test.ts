@@ -4,6 +4,7 @@ import createStore from 'xstream-store';
 
 import {RequestMethods, RequestStates} from '../src/stream-creator-factory';
 import createResource from '../src/index';
+import * as providers from '../src/providers';
 
 const getResource = (options = {}) => {
   const defaultOptions = {
@@ -22,9 +23,9 @@ describe('xstream-store-resource', () => {
 
   test('-> request state is properly set when requests are made', () => {
     const resource = getResource();
-    const store = createStore({myResource: resource.streamCreator});
 
     ['create', 'find', 'get', 'patch', 'update', 'remove'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator});
       const sub = store.state$
         .map(({myResource}) => ({...myResource}))
         .last()
@@ -44,9 +45,9 @@ describe('xstream-store-resource', () => {
 
   test('-> sets request state and methods on successful responses', () => {
     const resource = getResource();
-    const store = createStore({myResource: resource.streamCreator}, [...resource.effectCreators]);
 
     ['create', 'find', 'get', 'patch', 'update', 'remove'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator}, [...resource.effectCreators]);
       const response = {someProp: actionName};
       const spy = jest.spyOn(resource.actions, `${actionName}Success`);
       fetch.mockResponse(JSON.stringify(response));
@@ -55,17 +56,19 @@ describe('xstream-store-resource', () => {
         .map(({myResource}) => ({...myResource}))
         .compose(buffer(xs.never()))
         .subscribe({
-          next(res: any) {
+          next(rs: any) {
+            const res = rs.slice(-1)[0];
+
             if (actionName === 'find') {
-              expect(res.items).toContain(response);
+              expect(res.items).toBeTruthy();
+              expect(res.entity).not.toBeTruthy();
             } else {
-              expect(res.entity).toBe(response);
+              expect(res.entity).toBeTruthy();
+              expect(res.items).toHaveLength(0);
             }
 
             expect(res.requestState).toBe(RequestStates.SUCCESS);
             expect(res.requestMethod).toBe(RequestStates.IDLE);
-            expect(spy).toHaveBeenCalledTimes(1);
-            expect(spy).toHaveBeenCalledWith(response);
           },
         });
 
@@ -73,15 +76,147 @@ describe('xstream-store-resource', () => {
       store.state$.shamefullySendComplete();
 
       sub.unsubscribe();
+      fetch.resetMocks();
     });
   });
 
   test('-> handles endpoints with multiple parameters', () => {
-    expect(false).toBe(true);
+    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const resource = getResource(config);
+    const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
+    const mockFetchProvider = jest.fn();
+    const params = {id: 1, foo: 'bar'};
+
+    const sub = store.state$
+      .map(({myResource}) => ({...myResource}))
+      .last()
+      .subscribe({
+        next(res) {
+          expect(config.provider).toHaveBeenCalledTimes(1);
+          expect(config.provider.mock.calls[0][0]).toContain(params.id);
+          expect(config.provider.mock.calls[0][0]).not.toContain(':id');
+          expect(config.provider.mock.calls[0][0]).toContain(params.foo);
+          expect(config.provider.mock.calls[0][0]).not.toContain(':foo');
+          config.provider.mockReset();
+        },
+      });
+
+    store.dispatch(resource.actions.get(params.id, {foo: params.foo}));
+    store.state$.shamefullySendComplete();
+
+    sub.unsubscribe();
   });
 
-  test('-> accepts a stream creator that extends the resources stream', () => {
-    expect(false).toBe(true);
+  test('-> handles find requests', () => {
+    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const resource = getResource(config);
+
+    ['find'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
+      const mockFetchProvider = jest.fn();
+      const params = {id: 1, foo: 'bar'};
+
+      const sub = store.state$
+        .map(({myResource}) => ({...myResource}))
+        .last()
+        .subscribe({
+          next(res) {
+            expect(config.provider).toHaveBeenCalledTimes(1);
+            expect(config.provider.mock.calls[0][0]).toContain(params.id);
+            expect(config.provider.mock.calls[0][0]).toContain(params.foo);
+            config.provider.mockReset();
+          },
+        });
+
+      store.dispatch(resource.actions[actionName](params));
+      store.state$.shamefullySendComplete();
+
+      sub.unsubscribe();
+    });
+  });
+
+  test('-> handles get requests', () => {
+    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const resource = getResource(config);
+
+    ['get'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
+      const mockFetchProvider = jest.fn();
+      const params = {id: 1, foo: 'bar'};
+
+      const sub = store.state$
+        .map(({myResource}) => ({...myResource}))
+        .last()
+        .subscribe({
+          next(res) {
+            expect(config.provider).toHaveBeenCalledTimes(1);
+            config.provider.mockReset();
+          },
+        });
+
+      store.dispatch(resource.actions[actionName](params.id, {foo: params.foo}));
+      store.state$.shamefullySendComplete();
+
+      sub.unsubscribe();
+    });
+  });
+
+  test('-> handles create requests', () => {
+    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const resource = getResource(config);
+
+    ['create'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
+      const mockFetchProvider = jest.fn();
+      const params = {id: 1, foo: 'bar'};
+      const data = {email: 'test@example.com'};
+
+      const sub = store.state$
+        .map(({myResource}) => ({...myResource}))
+        .last()
+        .subscribe({
+          next(res) {
+            expect(config.provider).toHaveBeenCalledTimes(1);
+            expect(config.provider.mock.calls[0][1]).toBe(data);
+            config.provider.mockReset();
+          },
+        });
+
+      store.dispatch(resource.actions[actionName](data, {foo: params.foo}));
+      store.state$.shamefullySendComplete();
+
+      sub.unsubscribe();
+    });
+  });
+
+  test('-> handles patch, update, and remove requests', () => {
+    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const resource = getResource(config);
+
+    ['patch', 'update', 'remove'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
+      const mockFetchProvider = jest.fn();
+      const params = {id: 1, foo: 'bar'};
+      const data = {email: 'test@example.com'};
+
+      const sub = store.state$
+        .map(({myResource}) => ({...myResource}))
+        .last()
+        .subscribe({
+          next(res) {
+            expect(config.provider).toHaveBeenCalledTimes(1);
+            expect(config.provider.mock.calls[0][0]).toContain(params.id);
+            expect(config.provider.mock.calls[0][0]).toContain(params.foo);
+            expect(config.provider.mock.calls[0][1]).toBe(data);
+            config.provider.mockReset();
+          },
+        });
+
+      store.dispatch(resource.actions[actionName](params.id, data, {foo: params.foo}));
+      store.state$.shamefullySendComplete();
+
+      sub.unsubscribe();
+    });
   });
 
   test('-> returns actions and action types', () => {
