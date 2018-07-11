@@ -20,7 +20,7 @@ const createResource: CreateResource = options => {
   }
 
   const config: ICreateResourceConfig = {
-    configureRequest: (method: Method) => ({method}),
+    configureRequest: (method: Method) => ({}),
     customEffectCreators: [],
     methods: ['create', 'find', 'get', 'patch', 'remove', 'update'],
     provider: fetchProvider,

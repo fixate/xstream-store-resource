@@ -12,6 +12,15 @@ import {
 } from './types/effect-creator-factory';
 import {IError, IResource} from './types/stream-creator-factory';
 
+const methodToHttp = {
+  create: 'POST',
+  update: 'PUT',
+  patch: 'PATCH',
+  get: 'GET',
+  find: 'GET',
+  remove: 'DELETE',
+};
+
 const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
   actionTypes,
   actions,
@@ -29,7 +38,16 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
       const url = getUrl(baseUrl, {id, ...params}, query);
       const requestConfig = config.configureRequest(method);
 
-      return xs.from(provider(url, data, {method, ...requestConfig}));
+      return xs
+        .from(provider(url, data, {method: methodToHttp[method], ...requestConfig}))
+        .replaceError(err => {
+          if (typeof err.then === 'function') {
+            return xs.from(err);
+          } else {
+            return xs.of(err);
+          }
+        })
+        .map(err => ({error: err}));
     });
     const successResponse$: Stream<ResourceResponse> = response$
       .replaceError(_ => xs.empty())
@@ -43,7 +61,7 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
           return xs.of(x);
         }
       })
-      .map(res => ({error: res}));
+      .map(err => ({error: err}));
     const mergedResponse$ = xs.merge(successResponse$, failureResponse$);
 
     const subscription = mergedResponse$.subscribe({
