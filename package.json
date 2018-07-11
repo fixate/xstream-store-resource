@@ -3,6 +3,7 @@
   "version": "0.0.0-semantically-released",
   "description": "A module for making requests in xstream-store easy to build",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
     "commit": "git-cz",
