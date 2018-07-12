@@ -14,11 +14,11 @@ import {IError, IResource} from './types/stream-creator-factory';
 
 const methodToHttp = {
   create: 'POST',
-  update: 'PUT',
-  patch: 'PATCH',
-  get: 'GET',
   find: 'GET',
+  get: 'GET',
+  patch: 'PATCH',
   remove: 'DELETE',
+  update: 'PUT',
 };
 
 const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
@@ -33,39 +33,26 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
   const {provider, url: baseUrl} = config;
 
   const effectCreator: IEffectCreator = (select, dispatch) => {
-    const response$ = select(actionType).map(action => {
-      const {data, id, params, query} = action;
-      const url = getUrl(baseUrl, {id, ...params}, query);
-      const requestConfig = config.configureRequest(method);
+    const response$ = select(actionType)
+      .map(action => {
+        const {data, id, params, query} = action;
+        const url = getUrl(baseUrl, {id, ...params}, query);
+        const requestConfig = config.configureRequest(method);
 
-      return xs
-        .from(provider(url, data, {method: methodToHttp[method], ...requestConfig}))
-        .replaceError(err => {
-          if (typeof err.then === 'function') {
-            return xs.from(err);
-          } else {
-            return xs.of(err);
-          }
-        })
-        .map(err => ({error: err}));
-    });
-    const successResponse$: Stream<ResourceResponse> = response$
-      .replaceError(_ => xs.empty())
-      .filter(Boolean);
-    const failureResponse$: Stream<IResourceResponseError> = response$
-      .filter(() => false)
-      .replaceError(x => {
-        if (typeof x.then === 'function') {
-          return xs.from(x);
-        } else {
-          return xs.of(x);
-        }
+        return xs
+          .from(provider(url, data, {method: methodToHttp[method], ...requestConfig}))
+          .replaceError(err => {
+            if (typeof err.then === 'function') {
+              return xs.from(err).map(x => ({error: x}));
+            } else {
+              return xs.of({error: err});
+            }
+          });
       })
-      .map(err => ({error: err}));
-    const mergedResponse$ = xs.merge(successResponse$, failureResponse$);
+      .flatten();
 
-    const subscription = mergedResponse$.subscribe({
-      next(res) {
+    const subscription = response$.subscribe({
+      next(res: IResource | IResourceResponseError) {
         if ((res as IResourceResponseError).error) {
           dispatch(failureAction((res as IResourceResponseError).error));
         } else {
