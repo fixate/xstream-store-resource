@@ -1,7 +1,7 @@
 import {IAction, IEffectCreator, IStreamCreator} from 'xstream-store';
 
-import {Method} from './effect-creator-factory';
 import {IActionCreators} from './action-creators';
+import {Method} from './effect-creator-factory';
 import {Provider} from './providers';
 
 export type CreateEffectCreator = (actionTypes: any, actions: IActionCreators) => IEffectCreator;
