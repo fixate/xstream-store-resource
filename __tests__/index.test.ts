@@ -271,24 +271,24 @@ describe('xstream-store-resource', () => {
 
     ['create', 'find', 'get', 'patch', 'remove', 'update'].map(method => {
       const effect = actionTypes => (select, dispatch) => {
-	const sideEffect$ = select(actionTypes[method]);
+        const sideEffect$ = select(actionTypes[method]);
 
-	sideEffect$.subscribe({
-	  next() {
-	    spy(method);
-	  },
-	});
+        sideEffect$.subscribe({
+          next() {
+            spy(method);
+          },
+        });
       };
       const config = {name: 'my-resource', url: '/api', customEffectCreators: [effect]};
       const {actions, effectCreators, streamCreator} = createResource(config);
       const store = createStore({myResource: streamCreator}, effectCreators);
 
       const subs = store.state$.last().subscribe({
-	next() {
-	  expect(spy).toHaveBeenCalledTimes(1);
-	  expect(spy).toHaveBeenCalledWith(method);
-	  spy.mockReset();
-	},
+        next() {
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith(method);
+          spy.mockReset();
+        },
       });
 
       store.dispatch(actions[method]());
@@ -304,37 +304,37 @@ describe('xstream-store-resource', () => {
 
     ['create', 'find', 'get', 'patch', 'remove', 'update'].map(method => {
       const dispatchEffect = (actionTypes, actions) => (select, dispatch) => {
-	const $ = select(externalAction);
+        const $ = select(externalAction);
 
-	$.subscribe({
-	  next() {
-	    dispatch(actions[method]());
-	  },
-	});
+        $.subscribe({
+          next() {
+            dispatch(actions[method]());
+          },
+        });
       };
       const receiverEffect = (actionTypes, actions) => (select, dispatch) => {
-	const $ = select(actionTypes[method]);
+        const $ = select(actionTypes[method]);
 
-	$.subscribe({
-	  next() {
-	    spy(method);
-	  },
-	});
+        $.subscribe({
+          next() {
+            spy(method);
+          },
+        });
       };
       const config = {
-	customEffectCreators: [dispatchEffect, receiverEffect],
-	name: 'my-resource',
-	url: '/api',
+        customEffectCreators: [dispatchEffect, receiverEffect],
+        name: 'my-resource',
+        url: '/api',
       };
       const {actions, effectCreators, streamCreator} = createResource(config);
       const store = createStore({myResource: streamCreator}, effectCreators);
 
       const subs = store.state$.last().subscribe({
-	next() {
-	  expect(spy).toHaveBeenCalledTimes(1);
-	  expect(spy).toHaveBeenCalledWith(method);
-	  spy.mockReset();
-	},
+        next() {
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith(method);
+          spy.mockReset();
+        },
       });
 
       store.dispatch(externalAction);
@@ -347,7 +347,7 @@ describe('xstream-store-resource', () => {
   test('-> allows requests to be configured', () => {
     const requestConfig = {
       headers: {
-	foo: 'bar',
+        foo: 'bar',
       },
       'fake-prop': 'baz',
     };
@@ -365,7 +365,7 @@ describe('xstream-store-resource', () => {
       store.dispatch(actions[method]());
 
       Object.keys(requestConfig).map(key => {
-	expect(config.provider.mock.calls[0][2]).toHaveProperty(key);
+        expect(config.provider.mock.calls[0][2]).toHaveProperty(key);
       });
       expect(config.configureRequest).toHaveBeenCalledWith(method);
     });
