@@ -32,7 +32,7 @@ const createResource: CreateResource = options => {
   const streamCreator = createStreamCreator(actionTypes);
   const effectCreators = config.methods
     .map(method => createEffectCreator({actionTypes, actions, method, config}))
-    .concat(config.customEffectCreators.map(effectCreator => effectCreator(actionTypes)));
+    .concat(config.customEffectCreators.map(effectCreator => effectCreator(actionTypes, actions)));
 
   return {
     actionTypes,
