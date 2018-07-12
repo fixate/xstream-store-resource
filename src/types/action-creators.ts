@@ -6,13 +6,13 @@ export interface ID {
   id: string | number;
 }
 export interface IData {
-  [key: string]: any;
+  data: {[key: string]: any};
+}
+export interface IParams {
+  params: {[key: string]: any};
 }
 export interface IExtra {
   query?: {[key: string]: any};
-}
-export interface IParams {
-  [key: string]: any;
 }
 
 export type FailureActionCreator = (lastError: IError) => IAction;
@@ -28,7 +28,7 @@ export interface IActionCreators {
   findSuccess: (items?: IResource[]) => IAction;
   findFailure: (lastError: IError) => IAction;
 
-  get: (id: ID, params?: IParams, extra?: IExtra) => IAction;
+  get: (id?: ID, params?: IParams, extra?: IExtra) => IAction;
   getSuccess: (item?: IResource) => IAction;
   getFailure: FailureActionCreator;
 
