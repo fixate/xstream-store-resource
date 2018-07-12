@@ -8,11 +8,11 @@ export interface ID {
 export interface IData {
   [key: string]: any;
 }
-export interface IParams {
-  [key: string]: any;
-}
 export interface IExtra {
   query?: {[key: string]: any};
+}
+export interface IParams {
+  [key: string]: any;
 }
 
 export type FailureActionCreator = (lastError: IError) => IAction;
