@@ -6,10 +6,10 @@ export interface ID {
   id: string | number;
 }
 export interface IData {
-  data: {[key: string]: any};
+  [key: string]: any;
 }
 export interface IParams {
-  params: {[key: string]: any};
+  [key: string]: any;
 }
 export interface IExtra {
   query?: {[key: string]: any};
