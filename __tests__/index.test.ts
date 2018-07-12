@@ -54,11 +54,9 @@ describe('xstream-store-resource', () => {
 
       const sub = store.state$
         .map(({myResource}) => ({...myResource}))
-        .compose(buffer(xs.never()))
+        .drop(2)
         .subscribe({
-          next(rs: any) {
-            const res = rs.slice(-1)[0];
-
+          next(res: any) {
             if (actionName === 'find') {
               expect(res.items).toBeTruthy();
               expect(res.entity).not.toBeTruthy();
@@ -69,13 +67,18 @@ describe('xstream-store-resource', () => {
 
             expect(res.requestState).toBe(RequestStates.SUCCESS);
             expect(res.requestMethod).toBe(RequestStates.IDLE);
+
+            store.state$.shamefullySendComplete();
+
+            sub.unsubscribe();
           },
         });
 
       store.dispatch(resource.actions[actionName]());
-      store.state$.shamefullySendComplete();
+      fetch.resetMocks();
+    });
+  });
 
-      sub.unsubscribe();
   test('-> sets request state and methods on failed responses', () => {
     const resource = getResource();
 
@@ -86,20 +89,20 @@ describe('xstream-store-resource', () => {
       fetch.mockReject(JSON.stringify(error));
 
       const sub = store.state$
-	.map(({myResource}) => ({...myResource}))
-	.drop(2)
-	.subscribe({
-	  next(res: any) {
-	    expect(res.lastError).toBe(error);
+        .map(({myResource}) => ({...myResource}))
+        .drop(2)
+        .subscribe({
+          next(res: any) {
+            expect(res.lastError).toBe(error);
 
-	    expect(res.requestState).toBe(RequestStates.FAILURE);
-	    expect(res.requestMethod).toBe(RequestStates.IDLE);
+            expect(res.requestState).toBe(RequestStates.FAILURE);
+            expect(res.requestMethod).toBe(RequestStates.IDLE);
 
-	    store.state$.shamefullySendComplete();
+            store.state$.shamefullySendComplete();
 
-	    sub.unsubscribe();
-	  },
-	});
+            sub.unsubscribe();
+          },
+        });
 
       store.dispatch(resource.actions[actionName]());
       fetch.resetMocks();
@@ -253,10 +256,6 @@ describe('xstream-store-resource', () => {
   });
 
   test.skip('-> allows requests to be configured', () => {
-    expect(false).toBe(true);
-  });
-
-  test.skip('-> handles failed requests', () => {
     expect(false).toBe(true);
   });
 });
