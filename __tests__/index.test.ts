@@ -110,11 +110,11 @@ describe('xstream-store-resource', () => {
   });
 
   test('-> handles endpoints with multiple parameters', () => {
-    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const config = {url: '/resource/:foo/item/:bar', provider: jest.fn()};
     const resource = getResource(config);
     const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
     const mockFetchProvider = jest.fn();
-    const params = {id: 1, foo: 'bar'};
+    const params = {foo: 1, bar: 'baz'};
 
     const sub = store.state$
       .map(({myResource}) => ({...myResource}))
@@ -122,28 +122,28 @@ describe('xstream-store-resource', () => {
       .subscribe({
         next(res) {
           expect(config.provider).toHaveBeenCalledTimes(1);
-          expect(config.provider.mock.calls[0][0]).toContain(params.id);
-          expect(config.provider.mock.calls[0][0]).not.toContain(':id');
           expect(config.provider.mock.calls[0][0]).toContain(params.foo);
           expect(config.provider.mock.calls[0][0]).not.toContain(':foo');
+          expect(config.provider.mock.calls[0][0]).toContain(params.bar);
+          expect(config.provider.mock.calls[0][0]).not.toContain(':bar');
           config.provider.mockReset();
         },
       });
 
-    store.dispatch(resource.actions.get(params.id, {foo: params.foo}));
+    store.dispatch(resource.actions.get(null, params));
     store.state$.shamefullySendComplete();
 
     sub.unsubscribe();
   });
 
   test('-> handles find requests', () => {
-    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const config = {url: '/resource/:foo/item/:bar', provider: jest.fn()};
     const resource = getResource(config);
 
     ['find'].map(actionName => {
       const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
       const mockFetchProvider = jest.fn();
-      const params = {id: 1, foo: 'bar'};
+      const params = {foo: 1, bar: 'baz'};
 
       const sub = store.state$
         .map(({myResource}) => ({...myResource}))
@@ -151,8 +151,8 @@ describe('xstream-store-resource', () => {
         .subscribe({
           next(res) {
             expect(config.provider).toHaveBeenCalledTimes(1);
-            expect(config.provider.mock.calls[0][0]).toContain(params.id);
             expect(config.provider.mock.calls[0][0]).toContain(params.foo);
+            expect(config.provider.mock.calls[0][0]).toContain(params.bar);
             config.provider.mockReset();
           },
         });
@@ -165,13 +165,12 @@ describe('xstream-store-resource', () => {
   });
 
   test('-> handles get requests', () => {
-    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const config = {url: '/resource/:foo/item/:bar', provider: jest.fn()};
     const resource = getResource(config);
 
     ['get'].map(actionName => {
       const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
-      const mockFetchProvider = jest.fn();
-      const params = {id: 1, foo: 'bar'};
+      const params = {foo: 1, bar: 'baz'};
 
       const sub = store.state$
         .map(({myResource}) => ({...myResource}))
@@ -183,7 +182,7 @@ describe('xstream-store-resource', () => {
           },
         });
 
-      store.dispatch(resource.actions[actionName](params.id, {foo: params.foo}));
+      store.dispatch(resource.actions[actionName](null, params));
       store.state$.shamefullySendComplete();
 
       sub.unsubscribe();
@@ -191,13 +190,13 @@ describe('xstream-store-resource', () => {
   });
 
   test('-> handles create requests', () => {
-    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const config = {url: '/resource/:foo/item/:bar', provider: jest.fn()};
     const resource = getResource(config);
 
     ['create'].map(actionName => {
       const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
       const mockFetchProvider = jest.fn();
-      const params = {id: 1, foo: 'bar'};
+      const params = {foo: 1, bar: 'baz'};
       const data = {email: 'test@example.com'};
 
       const sub = store.state$
@@ -211,7 +210,7 @@ describe('xstream-store-resource', () => {
           },
         });
 
-      store.dispatch(resource.actions[actionName](data, {foo: params.foo}));
+      store.dispatch(resource.actions[actionName](data, params));
       store.state$.shamefullySendComplete();
 
       sub.unsubscribe();
@@ -219,13 +218,12 @@ describe('xstream-store-resource', () => {
   });
 
   test('-> handles patch, update, and remove requests', () => {
-    const config = {url: '/resource/:id/item/:foo', provider: jest.fn()};
+    const config = {url: '/resource/:foo/item/:bar', provider: jest.fn()};
     const resource = getResource(config);
 
     ['patch', 'update', 'remove'].map(actionName => {
       const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
-      const mockFetchProvider = jest.fn();
-      const params = {id: 1, foo: 'bar'};
+      const params = {foo: 1, bar: 'baz'};
       const data = {email: 'test@example.com'};
 
       const sub = store.state$
@@ -234,14 +232,14 @@ describe('xstream-store-resource', () => {
         .subscribe({
           next(res) {
             expect(config.provider).toHaveBeenCalledTimes(1);
-            expect(config.provider.mock.calls[0][0]).toContain(params.id);
             expect(config.provider.mock.calls[0][0]).toContain(params.foo);
+            expect(config.provider.mock.calls[0][0]).toContain(params.bar);
             expect(config.provider.mock.calls[0][1]).toBe(data);
             config.provider.mockReset();
           },
         });
 
-      store.dispatch(resource.actions[actionName](params.id, data, {foo: params.foo}));
+      store.dispatch(resource.actions[actionName](null, data, params));
       store.state$.shamefullySendComplete();
 
       sub.unsubscribe();
