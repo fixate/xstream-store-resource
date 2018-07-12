@@ -1,5 +1,6 @@
 import {IAction} from 'xstream-store';
 
+import {IActionCreators} from './action-creators';
 import {ICreateResourceConfig} from './create-resource';
 import {IError, IResource} from './stream-creator-factory';
 
@@ -11,7 +12,7 @@ export interface IResourceResponseError {
 export type ResourceResponse = IResource | IResource[];
 
 export interface ICreateEffectCreator {
-  actions: {[key: string]: (...args: any[]) => IAction};
+  actions: IActionCreators;
   actionTypes: {[key: string]: string};
   method: Method;
   config: ICreateResourceConfig;

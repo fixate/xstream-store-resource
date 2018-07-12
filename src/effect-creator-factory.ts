@@ -3,6 +3,7 @@ import {IAction, IEffectCreator} from 'xstream-store';
 
 import {getUrl} from './utils';
 
+import {IActionCreators} from './types/action-creators';
 import {ICreateResourceConfig} from './types/create-resource';
 import {
   ICreateEffectCreator,
@@ -28,8 +29,9 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
   config,
 }) => {
   const actionType = actionTypes[method.toUpperCase()];
-  const failureAction = actions[`${method.toLowerCase()}Failure`];
-  const successAction = actions[`${method.toLowerCase()}Success`];
+  const methodName = method.toLowerCase();
+  const failureAction = actions[`${methodName}Failure`];
+  const successAction = actions[`${methodName}Success`];
   const {provider, url: baseUrl} = config;
 
   const effectCreator: IEffectCreator = (select, dispatch) => {
