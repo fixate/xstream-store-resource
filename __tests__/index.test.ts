@@ -113,7 +113,6 @@ describe('xstream-store-resource', () => {
     const config = {url: '/resource/:foo/item/:bar', provider: jest.fn()};
     const resource = getResource(config);
     const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
-    const mockFetchProvider = jest.fn();
     const params = {foo: 1, bar: 'baz'};
 
     const sub = store.state$
@@ -142,7 +141,6 @@ describe('xstream-store-resource', () => {
 
     ['find'].map(actionName => {
       const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
-      const mockFetchProvider = jest.fn();
       const params = {foo: 1, bar: 'baz'};
 
       const sub = store.state$
@@ -195,7 +193,6 @@ describe('xstream-store-resource', () => {
 
     ['create'].map(actionName => {
       const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
-      const mockFetchProvider = jest.fn();
       const params = {foo: 1, bar: 'baz'};
       const data = {email: 'test@example.com'};
 
