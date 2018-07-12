@@ -76,6 +76,32 @@ describe('xstream-store-resource', () => {
       store.state$.shamefullySendComplete();
 
       sub.unsubscribe();
+  test('-> sets request state and methods on failed responses', () => {
+    const resource = getResource();
+
+    ['create', 'find', 'get', 'patch', 'update', 'remove'].map(actionName => {
+      const store = createStore({myResource: resource.streamCreator}, [...resource.effectCreators]);
+      const error = {message: 'request failed'};
+      const spy = jest.spyOn(resource.actions, `${actionName}Failure`);
+      fetch.mockReject(JSON.stringify(error));
+
+      const sub = store.state$
+	.map(({myResource}) => ({...myResource}))
+	.drop(2)
+	.subscribe({
+	  next(res: any) {
+	    expect(res.lastError).toBe(error);
+
+	    expect(res.requestState).toBe(RequestStates.FAILURE);
+	    expect(res.requestMethod).toBe(RequestStates.IDLE);
+
+	    store.state$.shamefullySendComplete();
+
+	    sub.unsubscribe();
+	  },
+	});
+
+      store.dispatch(resource.actions[actionName]());
       fetch.resetMocks();
     });
   });
