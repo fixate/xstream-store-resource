@@ -266,7 +266,82 @@ describe('xstream-store-resource', () => {
     });
   });
 
-  test.skip('-> allows requests to be configured', () => {
-    expect(false).toBe(true);
+  test('-> custom effects have access to action types', () => {
+    const spy = jest.fn();
+
+    ['create', 'find', 'get', 'patch', 'remove', 'update'].map(method => {
+      const effect = actionTypes => (select, dispatch) => {
+	const sideEffect$ = select(actionTypes[method]);
+
+	sideEffect$.subscribe({
+	  next() {
+	    spy(method);
+	  },
+	});
+      };
+      const config = {name: 'my-resource', url: '/api', customEffectCreators: [effect]};
+      const {actions, effectCreators, streamCreator} = createResource(config);
+      const store = createStore({myResource: streamCreator}, effectCreators);
+
+      const subs = store.state$.last().subscribe({
+	next() {
+	  expect(spy).toHaveBeenCalledTimes(1);
+	  expect(spy).toHaveBeenCalledWith(method);
+	  spy.mockReset();
+	},
+      });
+
+      store.dispatch(actions[method]());
+      store.state$.shamefullySendComplete();
+
+      subs.unsubscribe();
+    });
+  });
+
+  test(`-> custom effects can dispatch a resource's actions`, () => {
+    const spy = jest.fn();
+    const externalAction = {type: 'foo'};
+
+    ['create', 'find', 'get', 'patch', 'remove', 'update'].map(method => {
+      const dispatchEffect = (actionTypes, actions) => (select, dispatch) => {
+	const $ = select(externalAction);
+
+	$.subscribe({
+	  next() {
+	    dispatch(actions[method]());
+	  },
+	});
+      };
+      const receiverEffect = (actionTypes, actions) => (select, dispatch) => {
+	const $ = select(actionTypes[method]);
+
+	$.subscribe({
+	  next() {
+	    spy(method);
+	  },
+	});
+      };
+      const config = {
+	customEffectCreators: [dispatchEffect, receiverEffect],
+	name: 'my-resource',
+	url: '/api',
+      };
+      const {actions, effectCreators, streamCreator} = createResource(config);
+      const store = createStore({myResource: streamCreator}, effectCreators);
+
+      const subs = store.state$.last().subscribe({
+	next() {
+	  expect(spy).toHaveBeenCalledTimes(1);
+	  expect(spy).toHaveBeenCalledWith(method);
+	  spy.mockReset();
+	},
+      });
+
+      store.dispatch(externalAction);
+      store.state$.shamefullySendComplete();
+
+      subs.unsubscribe();
+    });
+  });
   });
 });
