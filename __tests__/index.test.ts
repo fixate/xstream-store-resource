@@ -343,5 +343,34 @@ describe('xstream-store-resource', () => {
       subs.unsubscribe();
     });
   });
+
+  test('-> allows requests to be configured', () => {
+    const requestConfig = {
+      headers: {
+	foo: 'bar',
+      },
+      'fake-prop': 'baz',
+    };
+    const config = {
+      name: 'my-resource',
+      url: '/api',
+      provider: jest.fn(),
+      configureRequest: jest.fn(method => ({...requestConfig})),
+    };
+
+    ['create', 'find', 'get', 'patch', 'update', 'remove'].map(method => {
+      const {actionTypes, actions, effectCreators, streamCreator} = createResource(config);
+      const store = createStore({myResource: streamCreator}, effectCreators);
+
+      store.dispatch(actions[method]());
+
+      Object.keys(requestConfig).map(key => {
+	expect(config.provider.mock.calls[0][2]).toHaveProperty(key);
+      });
+      expect(config.configureRequest).toHaveBeenCalledWith(method);
+    });
+
+    config.provider.mockReset();
+    config.configureRequest.mockReset();
   });
 });
