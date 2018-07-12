@@ -2,9 +2,7 @@ import {IAction} from 'xstream-store';
 
 import {IError, IResource} from './stream-creator-factory';
 
-export interface ID {
-  id: string | number;
-}
+export type ID = string | number;
 export interface IData {
   [key: string]: any;
 }
