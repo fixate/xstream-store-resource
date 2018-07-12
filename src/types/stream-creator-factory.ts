@@ -1,18 +1,18 @@
 export enum RequestStates {
-  IDLE = 'idle',
-  REQUESTING = 'requesting',
-  SUCCESS = 'success',
-  FAILURE = 'failure',
+  IDLE,
+  REQUESTING,
+  SUCCESS,
+  FAILURE,
 }
 
 export enum RequestMethods {
-  IDLE = 'idle',
-  GETTING = 'getting',
-  FINDING = 'finding',
-  CREATING = 'creating',
-  PATCHING = 'patching',
-  UPDATING = 'updating',
-  REMOVING = 'removing',
+  IDLE,
+  GETTING,
+  FINDING,
+  CREATING,
+  PATCHING,
+  UPDATING,
+  REMOVING,
 }
 
 export interface IResource {
