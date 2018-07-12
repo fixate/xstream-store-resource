@@ -1,4 +1,4 @@
-import {IActionCreators, ID, IData, IParams} from './types/action-creators';
+import {IActionCreators} from './types/action-creators';
 
 const getActions = (actionTypes: any): IActionCreators => ({
   reset: () => ({
