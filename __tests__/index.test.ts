@@ -255,6 +255,22 @@ describe('xstream-store-resource', () => {
     expect(actions).toMatchSnapshot();
   });
 
+  test('-> appends id to urls if provided', () => {
+    const config = {name: 'my-resource', url: '/api/resource', provider: jest.fn()};
+
+    ['get', 'patch', 'update', 'remove'].map(method => {
+      const id = 'foo';
+      const {actionTypes, actions, effectCreators, streamCreator} = createResource(config);
+      const store = createStore({myResource: streamCreator}, effectCreators);
+
+      store.dispatch(actions[method](id));
+
+      expect(config.provider.mock.calls[0][0].split('/').slice(-1)).toContain(id);
+
+      config.provider.mockReset();
+    });
+  });
+
   test.skip('-> allows requests to be configured', () => {
     expect(false).toBe(true);
   });
