@@ -5,7 +5,7 @@ export enum RequestStates {
   FAILURE,
 }
 
-export enum RequestMethods {
+export enum RequestEffects {
   IDLE,
   GETTING,
   FINDING,
@@ -25,6 +25,6 @@ export interface IResourceState {
   entity: IResource | null;
   items: IResource[];
   lastError: IError;
-  requestMethod: RequestMethods;
+  requestEffect: RequestEffects;
   requestState: RequestStates;
 }

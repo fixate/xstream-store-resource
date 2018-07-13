@@ -2,7 +2,7 @@ import xs from 'xstream';
 import buffer from 'xstream/extra/buffer';
 import createStore from 'xstream-store';
 
-import {RequestMethods, RequestStates} from '../src/types/stream-creator-factory';
+import {RequestEffects, RequestStates} from '../src/types/stream-creator-factory';
 import createResource from '../src/index';
 import * as providers from '../src/providers';
 
@@ -32,7 +32,7 @@ describe('xstream-store-resource', () => {
         .subscribe({
           next(res: any) {
             expect(res.requestState).toBe(RequestStates.REQUESTING);
-            expect(res.requestMethod).not.toBe(RequestMethods.IDLE);
+            expect(res.requestEffect).not.toBe(RequestEffects.IDLE);
           },
         });
 
@@ -66,7 +66,7 @@ describe('xstream-store-resource', () => {
             }
 
             expect(res.requestState).toBe(RequestStates.SUCCESS);
-            expect(res.requestMethod).toBe(RequestStates.IDLE);
+            expect(res.requestEffect).toBe(RequestStates.IDLE);
 
             store.state$.shamefullySendComplete();
 
@@ -96,7 +96,7 @@ describe('xstream-store-resource', () => {
             expect(res.lastError).toBe(error);
 
             expect(res.requestState).toBe(RequestStates.FAILURE);
-            expect(res.requestMethod).toBe(RequestStates.IDLE);
+            expect(res.requestEffect).toBe(RequestStates.IDLE);
 
             store.state$.shamefullySendComplete();
 
