@@ -9,7 +9,7 @@ export type CreateEffectCreator = (actionTypes: any, actions: IActionCreators) =
 export interface ICreateResourceConfig {
   configureRequest?: (x: Method) => {[key: string]: any};
   customEffectCreators?: CreateEffectCreator[];
-  methods?: Method[];
+  effects?: Method[];
   name: string;
   provider?: Provider;
   url: string;

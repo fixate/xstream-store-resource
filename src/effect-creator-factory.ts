@@ -6,14 +6,14 @@ import {getUrl} from './utils';
 import {IActionCreators} from './types/action-creators';
 import {ICreateResourceConfig} from './types/create-resource';
 import {
+  Effect,
   ICreateEffectCreator,
   IResourceResponseError,
-  Method,
   ResourceResponse,
 } from './types/effect-creator-factory';
 import {IError, IResource} from './types/stream-creator-factory';
 
-const methodToHttp = {
+const effectMethodMap = {
   create: 'POST',
   find: 'GET',
   get: 'GET',
@@ -25,13 +25,13 @@ const methodToHttp = {
 const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
   actionTypes,
   actions,
-  method,
   config,
+  effect,
 }) => {
-  const actionType = actionTypes[method.toUpperCase()];
-  const methodName = method.toLowerCase();
-  const failureAction = actions[`${methodName}Failure`];
-  const successAction = actions[`${methodName}Success`];
+  const actionType = actionTypes[effect.toUpperCase()];
+  const effectName = effect.toLowerCase();
+  const failureAction = actions[`${effectName}Failure`];
+  const successAction = actions[`${effectName}Success`];
   const {provider, url: baseUrl} = config;
 
   const effectCreator: IEffectCreator = (select, dispatch) => {
@@ -39,10 +39,10 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
       .map(action => {
         const {data, id, params, query} = action;
         const url = getUrl(baseUrl, {id, ...params}, query);
-        const requestConfig = config.configureRequest(method);
+        const requestConfig = config.configureRequest(effect);
 
         return xs
-          .from(provider(url, data, {method: methodToHttp[method], ...requestConfig}))
+          .from(provider(url, data, {method: effectMethodMap[effect], ...requestConfig}))
           .replaceError(err => {
             if (typeof err.then === 'function') {
               return xs.from(err).map(x => ({error: x}));

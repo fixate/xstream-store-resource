@@ -12,7 +12,7 @@ import {
   ICreateResourceConfig,
   ICreateResourceReturn,
 } from './types/create-resource';
-import {Method} from './types/effect-creator-factory';
+import {Effect} from './types/effect-creator-factory';
 
 const createResource: CreateResource = options => {
   if (!options.name || !options.url) {
@@ -20,9 +20,9 @@ const createResource: CreateResource = options => {
   }
 
   const config: ICreateResourceConfig = {
-    configureRequest: (method: Method) => ({}),
+    configureRequest: (effect: Effect) => ({}),
     customEffectCreators: [],
-    methods: ['create', 'find', 'get', 'patch', 'remove', 'update'],
+    effects: ['create', 'find', 'get', 'patch', 'remove', 'update'],
     provider: fetchProvider,
     ...options,
   };
@@ -30,8 +30,8 @@ const createResource: CreateResource = options => {
   const actionTypes = createActionTypes(config.name);
   const actions = getActions(actionTypes);
   const streamCreator = createStreamCreator(actionTypes);
-  const effectCreators = config.methods
-    .map(method => createEffectCreator({actionTypes, actions, method, config}))
+  const effectCreators = config.effects
+    .map(effect => createEffectCreator({actionTypes, actions, effect, config}))
     .concat(config.customEffectCreators.map(effectCreator => effectCreator(actionTypes, actions)));
 
   return {
