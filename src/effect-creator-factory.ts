@@ -6,7 +6,6 @@ import {getUrl} from './utils';
 import {IActionCreators} from './types/action-creators';
 import {ICreateResourceConfig} from './types/create-resource';
 import {
-  Effect,
   ICreateEffectCreator,
   IResourceResponseError,
   ResourceResponse,
