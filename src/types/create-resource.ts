@@ -1,15 +1,15 @@
 import {IAction, IEffectCreator, IStreamCreator} from 'xstream-store';
 
 import {IActionCreators} from './action-creators';
-import {Method} from './effect-creator-factory';
+import {Effect} from './effect-creator-factory';
 import {Provider} from './providers';
 
 export type CreateEffectCreator = (actionTypes: any, actions: IActionCreators) => IEffectCreator;
 
 export interface ICreateResourceConfig {
-  configureRequest?: (x: Method) => {[key: string]: any};
+  configureRequest?: (effect: Effect) => {[key: string]: any};
   customEffectCreators?: CreateEffectCreator[];
-  effects?: Method[];
+  effects?: Effect[];
   name: string;
   provider?: Provider;
   url: string;
