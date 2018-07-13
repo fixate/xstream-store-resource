@@ -373,4 +373,8 @@ describe('xstream-store-resource', () => {
     config.provider.mockReset();
     config.configureRequest.mockReset();
   });
+
+  test.skip('-> allows only specified effects to be created', () => {
+    expect(false).toBe(true);
+  });
 });
