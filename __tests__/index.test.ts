@@ -370,8 +370,8 @@ describe('xstream-store-resource', () => {
       expect(config.configureRequest).toHaveBeenCalledWith(method);
     });
 
-    config.provider.mockReset();
     config.configureRequest.mockReset();
+    config.provider.mockReset();
   });
 
   test.skip('-> allows only specified effects to be created', () => {
