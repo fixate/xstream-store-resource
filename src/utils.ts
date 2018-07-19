@@ -1,3 +1,5 @@
+import {GetUrl} from './types/utils';
+
 const getQueryString = (query: {[key: string]: any} = {}) =>
   Object.keys(query)
     .map(key => `${key}=${query[key]}`)
@@ -20,11 +22,13 @@ const getParameteriseUrl = (url: string, params: {[key: string]: any} = {}) => {
     .join('/');
 };
 
-const getUrl = (url: string, params: {[key: string]: any}, query: {[key: string]: any}) => {
+const getUrl: GetUrl = ({url, baseUrl}, params, query) => {
   const qs = getQueryString(query);
   const urlWithParams = getParameteriseUrl(url, params);
+  const joinChar = /^\//.test(urlWithParams) || /\/$/.test(baseUrl) ? '' : '/';
+  const absUrl = [baseUrl, urlWithParams].join(joinChar);
 
-  return [urlWithParams, qs].filter(Boolean).join('?');
+  return [absUrl, qs].filter(Boolean).join('?');
 };
 
 export {getUrl, getParameteriseUrl, getQueryString};
