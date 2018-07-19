@@ -374,6 +374,46 @@ describe('xstream-store-resource', () => {
     config.provider.mockReset();
   });
 
+  test('-> prepends a base url on an endpoint', () => {
+    const configs = [
+      {
+        url: '/resource',
+        provider: jest.fn(),
+        baseUrl: 'http://fake-url.com',
+      },
+      {
+        url: '/resource',
+        provider: jest.fn(),
+        baseUrl: 'http://fake-url.com/',
+      },
+      {
+        url: '/resource',
+        provider: jest.fn(),
+        baseUrl: '',
+      },
+    ];
+
+    configs.map(config => {
+      const resource = getResource(config);
+      const store = createStore({myResource: resource.streamCreator}, resource.effectCreators);
+
+      const sub = store.state$
+        .map(({myResource}) => ({...myResource}))
+        .last()
+        .subscribe({
+          next(res) {
+            expect(config.provider.mock.calls[0][0]).toContain(config.baseUrl);
+            expect(config.provider.mock.calls[0][0]).toContain(config.url);
+          },
+        });
+
+      store.dispatch(resource.actions.get());
+      store.state$.shamefullySendComplete();
+
+      sub.unsubscribe();
+    });
+  });
+
   test.skip('-> allows only specified effects to be created', () => {
     expect(false).toBe(true);
   });
