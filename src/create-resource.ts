@@ -20,6 +20,7 @@ const createResource: CreateResource = options => {
   }
 
   const config: ICreateResourceConfig = {
+    baseUrl: '',
     configureRequest: (effect: Effects) => ({}),
     customEffectCreators: [],
     effects: [

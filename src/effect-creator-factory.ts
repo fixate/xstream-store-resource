@@ -31,17 +31,17 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
   const effectName = effect.toLowerCase();
   const failureAction = actions[`${effectName}Failure`];
   const successAction = actions[`${effectName}Success`];
-  const {provider, url: baseUrl} = config;
+  const {provider, url, baseUrl} = config;
 
   const effectCreator: IEffectCreator = (select, dispatch) => {
     const response$ = select(actionType)
       .map(action => {
         const {data, id, params, query} = action;
-        const url = getUrl(baseUrl, {id, ...params}, query);
+        const requestUrl = getUrl({url, baseUrl}, {id, ...params}, query);
         const requestConfig = config.configureRequest(effect);
 
         return xs
-          .from(provider(url, data, {method: effectMethodMap[effect], ...requestConfig}))
+          .from(provider(requestUrl, data, {method: effectMethodMap[effect], ...requestConfig}))
           .replaceError(err => {
             if (typeof err.then === 'function') {
               return xs.from(err).map(x => ({error: x}));

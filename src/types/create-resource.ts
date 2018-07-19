@@ -7,6 +7,7 @@ import {Provider} from './providers';
 export type CreateEffectCreator = (actionTypes: any, actions: IActionCreators) => IEffectCreator;
 
 export interface ICreateResourceConfig {
+  baseUrl?: string;
   configureRequest?: (effect: Effects) => {[key: string]: any};
   customEffectCreators?: CreateEffectCreator[];
   effects?: Effects[];
