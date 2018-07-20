@@ -136,7 +136,7 @@ const config = {
   url: '/my-resource-endpoint/:with/:params',
   
   // optional configs
-  // types of requests to enable for the resource
+  // types of requests to create subscriptions for
   effects: [
     'create', // POST a new entity
     'find', // GET a list of resource entities
@@ -165,7 +165,7 @@ Similarly to Redux, `xstream-store` relies on dispatched actions to update the s
 ```js
 import {actions, actionTypes} from './user-resource'
 
-// the following action types can be used to filter other streams
+// the following action types can be used to filter other streams in the store
 /*
 actionTypes = {
   CREATE: '@users/create',
@@ -208,7 +208,7 @@ const actions = {
 */
 ```
 
-The above actions are the actions that are important as an end user, but a full list can be found in [src/action-creators.ts](./src/action-creators.ts].
+The above actions are the actions that are important as an end user, but a full list can be found in [src/action-creators.ts](./src/action-creators.ts).
 
 #### Action Parameters
 
