@@ -61,7 +61,7 @@ const subs = store.state$.subscribe({
   },
 });
 
-// console.log: initial user state
+/* console.log: initial user state
 {
   entity: null,
   items: [],
@@ -69,11 +69,12 @@ const subs = store.state$.subscribe({
   requestEffect: 'idle',
   lastError: {},
 }
+*/
 
 // get user with id '1'
 store.dispatch(userActions.get('1')
 
-// console.log: user request made, response pending
+/* console.log: user request made, response pending
 {
   entity: null,
   items: [],
@@ -81,8 +82,9 @@ store.dispatch(userActions.get('1')
   requestEffect: 'GETTING',
   lastError: {},
 }
+*/
 
-// console.log: user response received
+/* console.log: user response received
 {
   entity: {id: 1, name: 'Joe Soap', ...},
   items: [],
@@ -90,11 +92,12 @@ store.dispatch(userActions.get('1')
   requestEffect: 'IDLE',
   lastError: {},
 }
+*/
 
 // create a user
 store.dispatch(userActions.create({username: 'someone@me.com', name: 'Jane Doe'})
 
-// console.log: user request made, response pending
+/* console.log: user request made, response pending
 {
   entity: {...currUserDetails},
   items: [],
@@ -102,8 +105,9 @@ store.dispatch(userActions.create({username: 'someone@me.com', name: 'Jane Doe'}
   requestEffect: 'CREATING',
   lastError: {},
 }
+*/
 
-// console.log: user response received
+/* console.log: user response received
 {
   entity: {id: 2, name: 'Jane Doe', ...},
   items: [],
@@ -111,6 +115,7 @@ store.dispatch(userActions.create({username: 'someone@me.com', name: 'Jane Doe'}
   requestEffect: 'IDLE',
   lastError: {},
 }
+*/
 ```
 
 
