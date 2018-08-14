@@ -6,27 +6,31 @@ const getQueryString = (query: {[key: string]: any} = {}) =>
     .join('&');
 
 const getParameteriseUrl = (url: string, params: {[key: string]: any} = {}) => {
-  const {id, ...restParams} = params;
-
   return url
     .split('/')
     .map(part => {
-      const isParam = /^:/.test(part);
-      const param = part.replace(':', '');
-      const value = restParams[param];
+      const isParam = part[0] === ':';
+      if (!isParam) {
+        return part;
+      }
+      const param = part.substring(1);
+      const value = params[param];
+      if (value == null) {
+        throw new Error(
+          `The param key '${param}' does not exist in params when patameterizing the url '${url}'.`,
+        );
+      }
 
-      return isParam && value ? encodeURIComponent(value) : part;
+      return encodeURIComponent(value);
     })
-    .concat(id)
-    .filter(Boolean)
     .join('/');
 };
 
 const getUrl: GetUrl = ({url, baseUrl}, params, query) => {
   const qs = getQueryString(query);
-  const urlWithParams = getParameteriseUrl(url, params);
-  const joinChar = /^\//.test(urlWithParams) || /\/$/.test(baseUrl) ? '' : '/';
-  const absUrl = [baseUrl, urlWithParams].join(joinChar);
+  const parameterizedUrl = getParameteriseUrl(url, params);
+  const joinChar = /^\//.test(parameterizedUrl) || /\/$/.test(baseUrl) ? '' : '/';
+  const absUrl = [baseUrl, parameterizedUrl].join(joinChar);
 
   return [absUrl, qs].filter(Boolean).join('?');
 };

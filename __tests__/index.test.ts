@@ -250,8 +250,8 @@ describe('xstream-store-resource', () => {
     expect(actions).toMatchSnapshot();
   });
 
-  test('-> appends id to urls if provided', () => {
-    const config = {name: 'my-resource', url: '/api/resource', provider: jest.fn()};
+  test('-> substitutes url params', () => {
+    const config = {name: 'my-resource', url: '/api/resource/:id', provider: jest.fn()};
 
     ['get', 'patch', 'update', 'remove'].map(method => {
       const id = 'foo';
@@ -402,8 +402,9 @@ describe('xstream-store-resource', () => {
         .last()
         .subscribe({
           next(res) {
-            expect(config.provider.mock.calls[0][0]).toContain(config.baseUrl);
-            expect(config.provider.mock.calls[0][0]).toContain(config.url);
+            const url = config.provider.mock.calls[0][0];
+            expect(url).toContain(config.baseUrl);
+            expect(url).toContain(config.url);
           },
         });
 
