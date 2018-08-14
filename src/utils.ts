@@ -16,9 +16,7 @@ const getParameteriseUrl = (url: string, params: {[key: string]: any} = {}) => {
       const param = part.substring(1);
       const value = params[param];
       if (value == null) {
-        throw new Error(
-          `The param key '${param}' does not exist in params when patameterizing the url '${url}'.`,
-        );
+        return '';
       }
 
       return encodeURIComponent(value);
