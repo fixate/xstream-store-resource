@@ -34,7 +34,7 @@ export interface IActionCreators {
   patchSuccess: (item?: IResource) => IAction;
   patchFailure: FailureActionCreator;
 
-  remove: (id: ID, data: IData, params?: IParams, extra?: IExtra) => IAction;
+  remove: (id: ID, data?: IData, params?: IParams, extra?: IExtra) => IAction;
   removeSuccess: (items: IResource) => IAction;
   removeFailure: FailureActionCreator;
 
