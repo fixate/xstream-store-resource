@@ -12,7 +12,7 @@ import {
   ICreateResourceConfig,
   ICreateResourceReturn,
 } from './types/create-resource';
-import {Effects} from './types/effect-creator-factory';
+import {Effect} from './types/effect-creator-factory';
 
 const createResource: CreateResource = options => {
   if (!options.name || !options.url) {
@@ -21,16 +21,9 @@ const createResource: CreateResource = options => {
 
   const config: ICreateResourceConfig = {
     baseUrl: '',
-    configureRequest: (effect: Effects) => ({}),
+    configureRequest: (effect: Effect) => ({}),
     customEffectCreators: [],
-    effects: [
-      Effects.create,
-      Effects.find,
-      Effects.get,
-      Effects.patch,
-      Effects.remove,
-      Effects.update,
-    ],
+    effects: [Effect.Create, Effect.Find, Effect.Get, Effect.Patch, Effect.Remove, Effect.Update],
     provider: fetchProvider,
     ...options,
   };
@@ -39,7 +32,7 @@ const createResource: CreateResource = options => {
   const actions = getActions(actionTypes);
   const streamCreator = createStreamCreator(actionTypes);
   const effectCreators = config.effects
-    .filter(effect => !!Effects[effect])
+    .filter(effect => !!Effect[effect])
     .map(effect => createEffectCreator({actionTypes, actions, effect, config}))
     .concat(config.customEffectCreators.map(effectCreator => effectCreator(actionTypes, actions)));
 

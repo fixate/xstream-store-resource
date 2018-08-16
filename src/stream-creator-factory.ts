@@ -2,8 +2,8 @@ import xs from 'xstream';
 import {IAction, IScopedState, IStreamCreator} from 'xstream-store';
 
 import {
-  RequestEffects,
-  RequestStates,
+  RequestEffect,
+  RequestState,
   IError,
   IResource,
   IResourceState,
@@ -13,8 +13,8 @@ const initialState: IResourceState = {
   entity: null,
   items: [],
   lastError: {},
-  requestEffect: RequestEffects.IDLE,
-  requestState: RequestStates.IDLE,
+  requestEffect: RequestEffect.Idle,
+  requestState: RequestState.Idle,
 };
 
 const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator = actionTypes => {
@@ -33,44 +33,44 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
           .map(action => (state: IScopedState) => ({
             ...state,
             lastError: action.lastError,
-            requestEffect: RequestEffects.IDLE,
-            requestState: RequestStates.FAILURE,
+            requestEffect: RequestEffect.Idle,
+            requestState: RequestState.Failure,
           })),
 
         select(actionTypes.CREATE).map(_ => (state: IScopedState) => ({
           ...state,
-          requestEffect: RequestEffects.CREATING,
-          requestState: RequestStates.REQUESTING,
+          requestEffect: RequestEffect.Creating,
+          requestState: RequestState.Requesting,
         })),
 
         select(actionTypes.FIND).map(_ => (state: IScopedState) => ({
           ...state,
-          requestEffect: RequestEffects.FINDING,
-          requestState: RequestStates.REQUESTING,
+          requestEffect: RequestEffect.Finding,
+          requestState: RequestState.Requesting,
         })),
 
         select(actionTypes.GET).map(_ => (state: IScopedState) => ({
           ...state,
-          requestEffect: RequestEffects.GETTING,
-          requestState: RequestStates.REQUESTING,
+          requestEffect: RequestEffect.Getting,
+          requestState: RequestState.Requesting,
         })),
 
         select(actionTypes.PATCH).map(_ => (state: IScopedState) => ({
           ...state,
-          requestEffect: RequestEffects.PATCHING,
-          requestState: RequestStates.REQUESTING,
+          requestEffect: RequestEffect.Patching,
+          requestState: RequestState.Requesting,
         })),
 
         select(actionTypes.REMOVE).map(_ => (state: IScopedState) => ({
           ...state,
-          requestEffect: RequestEffects.REMOVING,
-          requestState: RequestStates.REQUESTING,
+          requestEffect: RequestEffect.Removing,
+          requestState: RequestState.Requesting,
         })),
 
         select(actionTypes.UPDATE).map(_ => (state: IScopedState) => ({
           ...state,
-          requestEffect: RequestEffects.UPDATING,
-          requestState: RequestStates.REQUESTING,
+          requestEffect: RequestEffect.Updating,
+          requestState: RequestState.Requesting,
         })),
 
         xs
@@ -84,15 +84,15 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => IStreamCreator
           .map(action => (state: IScopedState) => ({
             ...state,
             entity: action.entity,
-            requestEffect: RequestEffects.IDLE,
-            requestState: RequestStates.SUCCESS,
+            requestEffect: RequestEffect.Idle,
+            requestState: RequestState.Success,
           })),
 
         select(actionTypes.FIND_SUCCESS).map(action => (state: IScopedState) => ({
           ...state,
           items: action.items,
-          requestEffect: RequestEffects.IDLE,
-          requestState: RequestStates.SUCCESS,
+          requestEffect: RequestEffect.Idle,
+          requestState: RequestState.Success,
         })),
 
         select(actionTypes.RESET).map(() => (_: any) => initialState),
