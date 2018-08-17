@@ -1,6 +1,6 @@
-import {IActionCreators} from './types/action-creators';
+import {ActionCreators} from './types/action-creators';
 
-const getActions = (actionTypes: any): IActionCreators => ({
+const getActions = (actionTypes: any): ActionCreators => ({
   reset: () => ({
     type: actionTypes.RESET,
   }),

@@ -1,16 +1,16 @@
 import xs, {Stream} from 'xstream';
-import {IAction, IEffectCreator} from 'xstream-store';
+import {IEffectCreator} from 'xstream-store';
 
 import {getUrl} from './utils';
 
-import {IActionCreators} from './types/action-creators';
-import {ICreateResourceConfig} from './types/create-resource';
+import {ActionCreators} from './types/action-creators';
+import {CreateResourceConfig} from './types/create-resource';
 import {
-  ICreateEffectCreator,
-  IResourceResponseError,
+  CreateEffectCreator,
+  ResourceResponseError,
   ResourceResponse,
 } from './types/effect-creator-factory';
-import {IError, IResource} from './types/stream-creator-factory';
+import {Error, Resource} from './types/stream-creator-factory';
 
 const effectMethodMap = {
   create: 'POST',
@@ -21,7 +21,7 @@ const effectMethodMap = {
   update: 'PUT',
 };
 
-const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
+const createEffectCreator: (obj: CreateEffectCreator) => IEffectCreator = ({
   actionTypes,
   actions,
   config,
@@ -53,9 +53,9 @@ const createEffectCreator: (obj: ICreateEffectCreator) => IEffectCreator = ({
       .flatten();
 
     const subscription = response$.subscribe({
-      next(res: IResource | IResourceResponseError) {
-        if ((res as IResourceResponseError).error) {
-          dispatch(failureAction((res as IResourceResponseError).error));
+      next(res: Resource | ResourceResponseError) {
+        if ((res as ResourceResponseError).error) {
+          dispatch(failureAction((res as ResourceResponseError).error));
         } else {
           dispatch(successAction(res));
         }

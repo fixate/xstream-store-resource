@@ -1,6 +1,6 @@
-import {ICreateResourceConfig} from './create-resource';
+import {CreateResourceConfig} from './create-resource';
 
-export type GetUrlUrlArg = Pick<ICreateResourceConfig, 'url' | 'baseUrl'>;
+export type GetUrlUrlArg = Pick<CreateResourceConfig, 'url' | 'baseUrl'>;
 
 export type GetUrl = (
   {url, baseUrl}: GetUrlUrlArg,

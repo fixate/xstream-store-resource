@@ -1,45 +1,64 @@
 import {IAction} from 'xstream-store';
 
-import {IError, IResource} from './stream-creator-factory';
+import {Error, Resource} from './stream-creator-factory';
 
-export type ID = string | number;
-export interface IData {
+export type Id = string | number;
+export interface ActionCreatorData {
   [key: string]: any;
 }
-export interface IParams {
+export interface ActionCreatorParams {
   [key: string]: any;
 }
-export interface IExtra {
+export interface ActionCreatorExtra {
   query?: {[key: string]: any};
 }
 
-export type FailureActionCreator = (lastError: IError) => IAction;
+export type FailureActionCreator = (lastError: Error) => IAction;
 
-export interface IActionCreators {
+export interface ActionCreators {
   reset: () => IAction;
 
-  create: (data: IData, params?: IParams, extra?: IExtra) => IAction;
-  createSuccess: (item?: IResource) => IAction;
+  create: (
+    data: ActionCreatorData,
+    params?: ActionCreatorParams,
+    extra?: ActionCreatorExtra,
+  ) => IAction;
+  createSuccess: (item?: Resource) => IAction;
   createFailure: FailureActionCreator;
 
-  find: (params?: IParams, extra?: IExtra) => IAction;
-  findSuccess: (items?: IResource[]) => IAction;
-  findFailure: (lastError: IError) => IAction;
+  find: (params?: ActionCreatorParams, extra?: ActionCreatorExtra) => IAction;
+  findSuccess: (items?: Resource[]) => IAction;
+  findFailure: (lastError: Error) => IAction;
 
-  get: (id?: ID, params?: IParams, extra?: IExtra) => IAction;
-  getSuccess: (item?: IResource) => IAction;
+  get: (id?: Id, params?: ActionCreatorParams, extra?: ActionCreatorExtra) => IAction;
+  getSuccess: (item?: Resource) => IAction;
   getFailure: FailureActionCreator;
 
-  patch: (id: ID, data: IData, params?: IParams, extra?: IExtra) => IAction;
-  patchSuccess: (item?: IResource) => IAction;
+  patch: (
+    id: Id,
+    data: ActionCreatorData,
+    params?: ActionCreatorParams,
+    extra?: ActionCreatorExtra,
+  ) => IAction;
+  patchSuccess: (item?: Resource) => IAction;
   patchFailure: FailureActionCreator;
 
-  remove: (id: ID, data?: IData, params?: IParams, extra?: IExtra) => IAction;
-  removeSuccess: (items: IResource) => IAction;
+  remove: (
+    id: Id,
+    data?: ActionCreatorData,
+    params?: ActionCreatorParams,
+    extra?: ActionCreatorExtra,
+  ) => IAction;
+  removeSuccess: (items: Resource) => IAction;
   removeFailure: FailureActionCreator;
 
-  update: (id: ID, data: IData, params?: IParams, extra?: IExtra) => IAction;
-  updateSuccess: (items: IResource) => IAction;
+  update: (
+    id: Id,
+    data: ActionCreatorData,
+    params?: ActionCreatorParams,
+    extra?: ActionCreatorExtra,
+  ) => IAction;
+  updateSuccess: (items: Resource) => IAction;
   updateFailure: FailureActionCreator;
 
   [key: string]: (...args: any[]) => IAction;

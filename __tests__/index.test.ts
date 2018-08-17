@@ -1,10 +1,7 @@
-import xs from 'xstream';
-import buffer from 'xstream/extra/buffer';
 import createStore from 'xstream-store';
 
-import {RequestEffects, RequestStates} from '../src/types/stream-creator-factory';
 import createResource from '../src/index';
-import * as providers from '../src/providers';
+import {RequestEffect, RequestState} from '../src/types/stream-creator-factory';
 
 const getResource = (options = {}) => {
   const defaultOptions = {
@@ -31,8 +28,8 @@ describe('xstream-store-resource', () => {
         .last()
         .subscribe({
           next(res: any) {
-            expect(res.requestState).toBe(RequestStates.REQUESTING);
-            expect(res.requestEffect).not.toBe(RequestEffects.IDLE);
+            expect(res.requestState).toBe(RequestState.Requesting);
+            expect(res.requestEffect).not.toBe(RequestEffect.Idle);
           },
         });
 
@@ -65,8 +62,8 @@ describe('xstream-store-resource', () => {
               expect(res.items).toHaveLength(0);
             }
 
-            expect(res.requestState).toBe(RequestStates.SUCCESS);
-            expect(res.requestEffect).toBe(RequestStates.IDLE);
+            expect(res.requestState).toBe(RequestState.Success);
+            expect(res.requestEffect).toBe(RequestState.Idle);
 
             store.state$.shamefullySendComplete();
 
@@ -95,8 +92,8 @@ describe('xstream-store-resource', () => {
           next(res: any) {
             expect(res.lastError).toBe(error);
 
-            expect(res.requestState).toBe(RequestStates.FAILURE);
-            expect(res.requestEffect).toBe(RequestStates.IDLE);
+            expect(res.requestState).toBe(RequestState.Failure);
+            expect(res.requestEffect).toBe(RequestState.Idle);
 
             store.state$.shamefullySendComplete();
 
@@ -250,8 +247,8 @@ describe('xstream-store-resource', () => {
     expect(actions).toMatchSnapshot();
   });
 
-  test('-> appends id to urls if provided', () => {
-    const config = {name: 'my-resource', url: '/api/resource', provider: jest.fn()};
+  test('-> substitutes url params', () => {
+    const config = {name: 'my-resource', url: '/api/resource/:id', provider: jest.fn()};
 
     ['get', 'patch', 'update', 'remove'].map(method => {
       const id = 'foo';
@@ -303,7 +300,7 @@ describe('xstream-store-resource', () => {
     const externalAction = {type: 'foo'};
 
     ['create', 'find', 'get', 'patch', 'remove', 'update'].map(method => {
-      const dispatchEffect = (actionTypes, actions) => (select, dispatch) => {
+      const dispatchEffect = actionTypes => (select, dispatch) => {
         const $ = select(externalAction);
 
         $.subscribe({
@@ -312,7 +309,7 @@ describe('xstream-store-resource', () => {
           },
         });
       };
-      const receiverEffect = (actionTypes, actions) => (select, dispatch) => {
+      const receiverEffect = actionTypes => (select, dispatch) => {
         const $ = select(actionTypes[method]);
 
         $.subscribe({
@@ -346,16 +343,16 @@ describe('xstream-store-resource', () => {
 
   test('-> allows requests to be configured', () => {
     const requestConfig = {
+      'fake-prop': 'baz',
       headers: {
         foo: 'bar',
       },
-      'fake-prop': 'baz',
     };
     const config = {
-      name: 'my-resource',
-      url: '/api',
-      provider: jest.fn(),
       configureRequest: jest.fn(method => ({...requestConfig})),
+      name: 'my-resource',
+      provider: jest.fn(),
+      url: '/api',
     };
 
     ['create', 'find', 'get', 'patch', 'update', 'remove'].map(method => {
@@ -377,19 +374,19 @@ describe('xstream-store-resource', () => {
   test('-> prepends a base url on an endpoint', () => {
     const configs = [
       {
-        url: '/resource',
-        provider: jest.fn(),
         baseUrl: 'http://fake-url.com',
+        provider: jest.fn(),
+        url: '/resource',
       },
       {
-        url: '/resource',
-        provider: jest.fn(),
         baseUrl: 'http://fake-url.com/',
+        provider: jest.fn(),
+        url: '/resource',
       },
       {
-        url: '/resource',
-        provider: jest.fn(),
         baseUrl: '',
+        provider: jest.fn(),
+        url: '/resource',
       },
     ];
 
@@ -402,8 +399,9 @@ describe('xstream-store-resource', () => {
         .last()
         .subscribe({
           next(res) {
-            expect(config.provider.mock.calls[0][0]).toContain(config.baseUrl);
-            expect(config.provider.mock.calls[0][0]).toContain(config.url);
+            const url = config.provider.mock.calls[0][0];
+            expect(url).toContain(config.baseUrl);
+            expect(url).toContain(config.url);
           },
         });
 
