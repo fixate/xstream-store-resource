@@ -15,16 +15,16 @@ export enum RequestEffect {
   Removing,
 }
 
-export interface IResource {
+export interface Error {
   [key: string]: any;
 }
-export interface IError {
+export interface Resource {
   [key: string]: any;
 }
-export interface IResourceState {
-  entity: IResource | null;
-  items: IResource[];
-  lastError: IError;
+export interface ResourceState<R = {}> {
+  entity: R | null;
+  items: R[];
+  lastError: Error;
   requestEffect: RequestEffect;
   requestState: RequestState;
 }

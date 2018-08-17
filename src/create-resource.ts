@@ -9,8 +9,8 @@ import createStreamCreator from './stream-creator-factory';
 import {
   CreateEffectCreator,
   CreateResource,
-  ICreateResourceConfig,
-  ICreateResourceReturn,
+  CreateResourceConfig,
+  CreateResourceReturn,
 } from './types/create-resource';
 import {Effect} from './types/effect-creator-factory';
 
@@ -19,7 +19,7 @@ const createResource: CreateResource = options => {
     throw new Error('name and url is required for createResource options');
   }
 
-  const config: ICreateResourceConfig = {
+  const config: CreateResourceConfig = {
     baseUrl: '',
     configureRequest: (effect: Effect) => ({}),
     customEffectCreators: [],

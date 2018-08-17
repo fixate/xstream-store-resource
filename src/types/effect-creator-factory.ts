@@ -1,8 +1,6 @@
-import {IAction} from 'xstream-store';
-
-import {IActionCreators} from './action-creators';
-import {ICreateResourceConfig} from './create-resource';
-import {IError, IResource} from './stream-creator-factory';
+import {ActionCreators} from './action-creators';
+import {CreateResourceConfig} from './create-resource';
+import {Error, Resource} from './stream-creator-factory';
 
 export enum Effect {
   Create = 'create',
@@ -13,14 +11,14 @@ export enum Effect {
   Update = 'update',
 }
 
-export interface IResourceResponseError {
-  error: IError;
+export interface ResourceResponseError {
+  error: Error;
 }
-export type ResourceResponse = IResource | IResource[];
+export type ResourceResponse = Resource | Resource[];
 
-export interface ICreateEffectCreator {
-  actions: IActionCreators;
+export interface CreateEffectCreator {
+  actions: ActionCreators;
   actionTypes: {[key: string]: string};
-  config: ICreateResourceConfig;
+  config: CreateResourceConfig;
   effect: Effect;
 }

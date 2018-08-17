@@ -1,15 +1,9 @@
 import xs from 'xstream';
-import {IAction, IScopedState, IStreamCreator} from 'xstream-store';
+import {IScopedState, IStreamCreator} from 'xstream-store';
 
-import {
-  RequestEffect,
-  RequestState,
-  IError,
-  IResource,
-  IResourceState,
-} from './types/stream-creator-factory';
+import {Error, RequestEffect, RequestState, ResourceState} from './types/stream-creator-factory';
 
-const initialState: IResourceState = {
+const initialState: ResourceState = {
   entity: null,
   items: [],
   lastError: {},

@@ -10,11 +10,14 @@ const getParameteriseUrl = (url: string, params: {[key: string]: any} = {}) => {
     .split('/')
     .map(part => {
       const isParam = part[0] === ':';
+
       if (!isParam) {
         return part;
       }
+
       const param = part.substring(1);
       const value = params[param];
+
       if (value == null) {
         return '';
       }
