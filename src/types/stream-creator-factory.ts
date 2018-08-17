@@ -1,18 +1,18 @@
-export enum RequestStates {
-  IDLE,
-  REQUESTING,
-  SUCCESS,
-  FAILURE,
+export enum RequestState {
+  Idle,
+  Requesting,
+  Success,
+  Failure,
 }
 
-export enum RequestEffects {
-  IDLE,
-  GETTING,
-  FINDING,
-  CREATING,
-  PATCHING,
-  UPDATING,
-  REMOVING,
+export enum RequestEffect {
+  Idle,
+  Getting,
+  Finding,
+  Creating,
+  Patching,
+  Updating,
+  Removing,
 }
 
 export interface IResource {
@@ -25,6 +25,6 @@ export interface IResourceState {
   entity: IResource | null;
   items: IResource[];
   lastError: IError;
-  requestEffect: RequestEffects;
-  requestState: RequestStates;
+  requestEffect: RequestEffect;
+  requestState: RequestState;
 }
