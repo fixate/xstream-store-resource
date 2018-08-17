@@ -1,5 +1,5 @@
 import xs, {Stream} from 'xstream';
-import {IEffectCreator} from 'xstream-store';
+import {EffectCreator} from 'xstream-store';
 
 import {getUrl} from './utils';
 
@@ -21,7 +21,7 @@ const effectMethodMap = {
   update: 'PUT',
 };
 
-const createEffectCreator: (obj: CreateEffectCreator) => IEffectCreator = ({
+const createEffectCreator: (obj: CreateEffectCreator) => EffectCreator = ({
   actionTypes,
   actions,
   config,
@@ -33,7 +33,7 @@ const createEffectCreator: (obj: CreateEffectCreator) => IEffectCreator = ({
   const successAction = actions[`${effectName}Success`];
   const {provider, url, baseUrl} = config;
 
-  const effectCreator: IEffectCreator = (select, dispatch) => {
+  const effectCreator: EffectCreator = (select, dispatch) => {
     const response$ = select(actionType)
       .map(action => {
         const {data, id, params, query} = action;

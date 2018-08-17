@@ -1,4 +1,4 @@
-import {IAction} from 'xstream-store';
+import {Action} from 'xstream-store';
 
 import {Error, Resource} from './stream-creator-factory';
 
@@ -13,25 +13,25 @@ export interface ActionCreatorExtra {
   query?: {[key: string]: any};
 }
 
-export type FailureActionCreator = (lastError: Error) => IAction;
+export type FailureActionCreator = (lastError: Error) => Action;
 
 export interface ActionCreators {
-  reset: () => IAction;
+  reset: () => Action;
 
   create: (
     data: ActionCreatorData,
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
-  ) => IAction;
-  createSuccess: (item?: Resource) => IAction;
+  ) => Action;
+  createSuccess: (item?: Resource) => Action;
   createFailure: FailureActionCreator;
 
-  find: (params?: ActionCreatorParams, extra?: ActionCreatorExtra) => IAction;
-  findSuccess: (items?: Resource[]) => IAction;
-  findFailure: (lastError: Error) => IAction;
+  find: (params?: ActionCreatorParams, extra?: ActionCreatorExtra) => Action;
+  findSuccess: (items?: Resource[]) => Action;
+  findFailure: (lastError: Error) => Action;
 
-  get: (id?: Id, params?: ActionCreatorParams, extra?: ActionCreatorExtra) => IAction;
-  getSuccess: (item?: Resource) => IAction;
+  get: (id?: Id, params?: ActionCreatorParams, extra?: ActionCreatorExtra) => Action;
+  getSuccess: (item?: Resource) => Action;
   getFailure: FailureActionCreator;
 
   patch: (
@@ -39,8 +39,8 @@ export interface ActionCreators {
     data: ActionCreatorData,
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
-  ) => IAction;
-  patchSuccess: (item?: Resource) => IAction;
+  ) => Action;
+  patchSuccess: (item?: Resource) => Action;
   patchFailure: FailureActionCreator;
 
   remove: (
@@ -48,8 +48,8 @@ export interface ActionCreators {
     data?: ActionCreatorData,
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
-  ) => IAction;
-  removeSuccess: (items: Resource) => IAction;
+  ) => Action;
+  removeSuccess: (items: Resource) => Action;
   removeFailure: FailureActionCreator;
 
   update: (
@@ -57,9 +57,9 @@ export interface ActionCreators {
     data: ActionCreatorData,
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
-  ) => IAction;
-  updateSuccess: (items: Resource) => IAction;
+  ) => Action;
+  updateSuccess: (items: Resource) => Action;
   updateFailure: FailureActionCreator;
 
-  [key: string]: (...args: any[]) => IAction;
+  [key: string]: (...args: any[]) => Action;
 }

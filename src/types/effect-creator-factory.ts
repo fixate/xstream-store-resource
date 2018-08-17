@@ -1,3 +1,5 @@
+import {ActionType, EffectCreator} from 'xstream-store';
+
 import {ActionCreators} from './action-creators';
 import {CreateResourceConfig} from './create-resource';
 import {Error, Resource} from './stream-creator-factory';
@@ -18,7 +20,12 @@ export type ResourceResponse = Resource | Resource[];
 
 export interface CreateEffectCreator {
   actions: ActionCreators;
-  actionTypes: {[key: string]: string};
+  actionTypes: {[key: string]: ActionType};
   config: CreateResourceConfig;
   effect: Effect;
 }
+
+export type CustomEffectCreator = (
+  actionTypes: {[key: string]: ActionType},
+  actions: any,
+) => EffectCreator;
