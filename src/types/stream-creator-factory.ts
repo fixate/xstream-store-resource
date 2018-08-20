@@ -21,7 +21,7 @@ export interface Error {
 export interface Resource {
   [key: string]: any;
 }
-export interface ResourceState<R = {}> {
+export interface ResourceState<R = {[key: string]: any}> {
   entity: R | null;
   items: R[];
   lastError: Error;
