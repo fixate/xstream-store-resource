@@ -23,7 +23,7 @@ export interface Resource {
 }
 export interface ResourceState<R = {[key: string]: any}> {
   entity: R | null;
-  items: R[];
+  items: R | null;
   lastError: Error;
   requestEffect: RequestEffect;
   requestState: RequestState;
