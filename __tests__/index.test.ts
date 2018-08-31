@@ -54,13 +54,7 @@ describe('xstream-store-resource', () => {
         .drop(2)
         .subscribe({
           next(res: any) {
-            if (actionName === 'find') {
-              expect(res.items).toBeTruthy();
-              expect(res.entity).not.toBeTruthy();
-            } else {
-              expect(res.entity).toBeTruthy();
-              expect(res.items).toHaveLength(0);
-            }
+            expect(res.response).toBeTruthy();
 
             expect(res.requestState).toBe(RequestState.Success);
             expect(res.requestEffect).toBe(RequestState.Idle);
@@ -90,6 +84,7 @@ describe('xstream-store-resource', () => {
         .drop(2)
         .subscribe({
           next(res: any) {
+            expect(res.response).toBeFalsy();
             expect(res.lastError).toBe(error);
 
             expect(res.requestState).toBe(RequestState.Failure);
