@@ -4,8 +4,7 @@ import {ScopedState, StreamCreator} from 'xstream-store';
 import {Error, RequestEffect, RequestState, ResourceState} from './types/stream-creator-factory';
 
 const initialState: ResourceState = {
-  entity: null,
-  items: [],
+  response: null,
   lastError: {},
   requestEffect: RequestEffect.Idle,
   requestState: RequestState.Idle,
@@ -70,6 +69,7 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => StreamCreator 
         xs
           .merge(
             select(actionTypes.CREATE_SUCCESS),
+            select(actionTypes.FIND_SUCCESS),
             select(actionTypes.GET_SUCCESS),
             select(actionTypes.PATCH_SUCCESS),
             select(actionTypes.REMOVE_SUCCESS),
@@ -77,17 +77,10 @@ const createStreamCreator: (actionTs: {[key: string]: string}) => StreamCreator 
           )
           .map(action => (state: ScopedState) => ({
             ...state,
-            entity: action.entity,
+            response: action.response,
             requestEffect: RequestEffect.Idle,
             requestState: RequestState.Success,
           })),
-
-        select(actionTypes.FIND_SUCCESS).map(action => (state: ScopedState) => ({
-          ...state,
-          items: action.items,
-          requestEffect: RequestEffect.Idle,
-          requestState: RequestState.Success,
-        })),
 
         select(actionTypes.RESET).map(() => (_: any) => initialState),
       )

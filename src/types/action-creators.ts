@@ -23,15 +23,15 @@ export interface ActionCreators {
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
   ) => Action;
-  createSuccess: (item?: Resource) => Action;
+  createSuccess: (response?: Resource) => Action;
   createFailure: FailureActionCreator;
 
   find: (params?: ActionCreatorParams, extra?: ActionCreatorExtra) => Action;
-  findSuccess: (items?: Resource[]) => Action;
+  findSuccess: (response?: Resource) => Action;
   findFailure: (lastError: Error) => Action;
 
   get: (id?: Id, params?: ActionCreatorParams, extra?: ActionCreatorExtra) => Action;
-  getSuccess: (item?: Resource) => Action;
+  getSuccess: (response?: Resource) => Action;
   getFailure: FailureActionCreator;
 
   patch: (
@@ -40,7 +40,7 @@ export interface ActionCreators {
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
   ) => Action;
-  patchSuccess: (item?: Resource) => Action;
+  patchSuccess: (response?: Resource) => Action;
   patchFailure: FailureActionCreator;
 
   remove: (
@@ -49,7 +49,7 @@ export interface ActionCreators {
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
   ) => Action;
-  removeSuccess: (items: Resource) => Action;
+  removeSuccess: (response: Resource) => Action;
   removeFailure: FailureActionCreator;
 
   update: (
@@ -58,7 +58,7 @@ export interface ActionCreators {
     params?: ActionCreatorParams,
     extra?: ActionCreatorExtra,
   ) => Action;
-  updateSuccess: (items: Resource) => Action;
+  updateSuccess: (response: Resource) => Action;
   updateFailure: FailureActionCreator;
 
   [key: string]: (...args: any[]) => Action;

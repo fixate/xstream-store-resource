@@ -12,8 +12,8 @@ const getActions = (actionTypes: any): ActionCreators => ({
     type: actionTypes.CREATE,
   }),
 
-  createSuccess: entity => ({
-    entity,
+  createSuccess: response => ({
+    response,
     type: actionTypes.CREATE_SUCCESS,
   }),
 
@@ -28,8 +28,8 @@ const getActions = (actionTypes: any): ActionCreators => ({
     type: actionTypes.FIND,
   }),
 
-  findSuccess: items => ({
-    items,
+  findSuccess: response => ({
+    response,
     type: actionTypes.FIND_SUCCESS,
   }),
 
@@ -45,8 +45,8 @@ const getActions = (actionTypes: any): ActionCreators => ({
     type: actionTypes.GET,
   }),
 
-  getSuccess: entity => ({
-    entity,
+  getSuccess: response => ({
+    response,
     type: actionTypes.GET_SUCCESS,
   }),
 
@@ -63,8 +63,8 @@ const getActions = (actionTypes: any): ActionCreators => ({
     type: actionTypes.PATCH,
   }),
 
-  patchSuccess: entity => ({
-    entity,
+  patchSuccess: response => ({
+    response,
     type: actionTypes.PATCH_SUCCESS,
   }),
 
@@ -81,8 +81,8 @@ const getActions = (actionTypes: any): ActionCreators => ({
     type: actionTypes.UPDATE,
   }),
 
-  updateSuccess: entity => ({
-    entity,
+  updateSuccess: response => ({
+    response,
     type: actionTypes.UPDATE_SUCCESS,
   }),
 
@@ -99,8 +99,8 @@ const getActions = (actionTypes: any): ActionCreators => ({
     type: actionTypes.REMOVE,
   }),
 
-  removeSuccess: entity => ({
-    entity,
+  removeSuccess: response => ({
+    response,
     type: actionTypes.REMOVE_SUCCESS,
   }),
 
