@@ -64,8 +64,7 @@ const subs = store.state$.subscribe({
 
 /* console.log: initial user state
 {
-  entity: null,
-  items: [],
+  response: null,
   requestState: 'idle',
   requestEffect: 'idle',
   lastError: {},
@@ -77,8 +76,7 @@ store.dispatch(userActions.get('1')
 
 /* console.log: user request made, response pending
 {
-  entity: null,
-  items: [],
+  response: null,
   requestState: 'REQUESTING',
   requestEffect: 'GETTING',
   lastError: {},
@@ -87,8 +85,7 @@ store.dispatch(userActions.get('1')
 
 /* console.log: user response received
 {
-  entity: {id: 1, name: 'Joe Soap', ...},
-  items: [],
+  response: {id: 1, name: 'Joe Soap', ...},
   requestState: 'SUCCESS',
   requestEffect: 'IDLE',
   lastError: {},
@@ -100,8 +97,7 @@ store.dispatch(userActions.create({username: 'someone@me.com', name: 'Jane Doe'}
 
 /* console.log: user request made, response pending
 {
-  entity: {...currUserDetails},
-  items: [],
+  response: {...currUserDetails},
   requestState: 'REQUESTING',
   requestEffect: 'CREATING',
   lastError: {},
@@ -110,8 +106,7 @@ store.dispatch(userActions.create({username: 'someone@me.com', name: 'Jane Doe'}
 
 /* console.log: user response received
 {
-  entity: {id: 2, name: 'Jane Doe', ...},
-  items: [],
+  response: {id: 2, name: 'Jane Doe', ...},
   requestState: 'SUCCESS',
   requestEffect: 'IDLE',
   lastError: {},
@@ -133,14 +128,14 @@ const config = {
   // required configs
   name: 'my-resource-name',
   url: '/my-resource-endpoint/:with/:params',
-  
+
   // optional configs
   // base URL to append url config to, e.g. http://my-domain.com
   baseUrl: '',
-  
+
   // custom effect creators you want subscribed to this state stream
   customEffectCreators: [],
-  
+
   // types of requests to create subscriptions for
   effects: [
     'create', // POST a new entity
@@ -150,11 +145,11 @@ const config = {
     'remove', // DELETE an entity
     'update'  // PUT an entity
   ],
-  
+
   // How requests will be made, i.e. fetch, jQuery, axios, etc.
   // Uses a fetch provider by default
   provider: (requestUrl, data, config) => {...},
-  
+
   // configure requests based on the effect, e.g. custom headers for POST
   requestConfig: (effect) => {},
 };
@@ -163,21 +158,21 @@ const config = {
 const {
   // an object containing actions to dispatch for this resource
   actions,
-  
+
   // The generated actionTypes used by the above actions
   // Useful if you want to create your own action creators to dispatch,
   // or if you are creating your own effect creators
   actionTypes,
-  
+
   // the stream creator that must be passed to xstream-store's createStore
   streamCreator,
-  
+
   // an array of effect creators that must be passed to xstream-store's createStore
   effectCreators,
 } = createResource(config);
 ```
 
-### Actions and Types of Actions 
+### Actions and Types of Actions
 
 Similarly to Redux, `xstream-store` relies on dispatched actions to update the state stream. `xstream-store-resource` generates all the actions and action types necessary to make HTTP requests:
 
@@ -249,8 +244,7 @@ When the `create`, `find`, `get`, `patch`, `remove`, and `update` action creator
 ```js
 // dispatch patch on a user
 {
-  entity: {...userDetails},
-  items: [],
+  response: {...userDetails},
   requestState: 'REQUESTING',
   requestEffect: 'PATCHING',
   lastError: {},
@@ -262,8 +256,7 @@ Once the request is resolved or rejected, the resource's state will be updated:
 ```js
 // success
 {
-  entity: {...userDetails},
-  items: [],
+  response: {...userDetails},
   requestState: 'SUCCESS',
   requestEffect: 'IDLE',
   lastError: {},
@@ -271,8 +264,7 @@ Once the request is resolved or rejected, the resource's state will be updated:
 
 // failure
 {
-  entity: {...userDetails},
-  items: [],
+  response: {...userDetails},
   requestState: 'FAILURE',
   requestEffect: 'IDLE',
   lastError: {message: 'request failed'},
